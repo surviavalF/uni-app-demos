@@ -70,11 +70,12 @@
   </view>
 </template>
 
-/* 
-为什不用u-view自带的 u-Collapse? 有几个条件：1.页面需要快速的响应不能放在 onReady() 里请求数据接口。2.页面有下拉刷新可以刷新数据。
-这就导致了我不能在获取完接口后直接使用 u-Collapse 的 this.$refs.collapseView.init(); 只能写在 setTimeout 里来延时刷新。而页面又有下拉
-刷新，就会导致不停下拉刷会产生无数个 setTimeout 页面卡死，只能自己写一个类似的组件。
-*/
+/* 为什不用u-view自带的 u-Collapse? 有几个条件：1.页面需要快速的响应不能放在
+onReady() 里请求数据接口。2.页面有下拉刷新可以刷新数据。
+这就导致了我不能在获取完接口后直接使用 u-Collapse 的
+this.$refs.collapseView.init(); 只能写在 setTimeout 里来延时刷新。而页面又有下拉
+刷新，就会导致不停下拉刷会产生无数个 setTimeout
+页面卡死，只能自己写一个类似的组件。 */
 
 <script>
 import dataList from "./data.js";
