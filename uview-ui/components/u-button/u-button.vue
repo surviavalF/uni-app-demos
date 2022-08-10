@@ -85,9 +85,8 @@
  * @event {Function} launchapp 打开 APP 成功的回调
  * @example <u-button>月落</u-button>
  */
-import { mapState, mapMutations } from 'vuex'
 export default {
-  name: 'u-button',
+  name: "u-button",
   props: {
     freeze: {
       type: Boolean,
@@ -101,17 +100,17 @@ export default {
     // 按钮的预置样式，default，primary，error，warning，success
     type: {
       type: String,
-      default: 'default'
+      default: "default"
     },
     // 按钮尺寸，default，medium，mini
     size: {
       type: String,
-      default: 'default'
+      default: "default"
     },
     // 按钮形状，circle（两边为半圆），square（带圆角）
     shape: {
       type: String,
-      default: 'square'
+      default: "square"
     },
     // 按钮是否镂空
     plain: {
@@ -132,19 +131,19 @@ export default {
     // https://uniapp.dcloud.io/component/button
     openType: {
       type: String,
-      default: ''
+      default: ""
     },
     // 用于 <form> 组件，点击分别会触发 <form> 组件的 submit/reset 事件
     // 取值为submit（提交表单），reset（重置表单）
     formType: {
       type: String,
-      default: ''
+      default: ""
     },
     // 打开 APP 时，向 APP 传递的参数，open-type=launchApp时有效
     // 只微信小程序、QQ小程序有效
     appParameter: {
       type: String,
-      default: ''
+      default: ""
     },
     // 指定是否阻止本节点的祖先节点出现点击态，微信小程序有效
     hoverStopPropagation: {
@@ -154,30 +153,30 @@ export default {
     // 指定返回用户信息的语言，zh_CN 简体中文，zh_TW 繁体中文，en 英文。只微信小程序有效
     lang: {
       type: String,
-      default: 'en'
+      default: "en"
     },
     // 会话来源，open-type="contact"时有效。只微信小程序有效
     sessionFrom: {
       type: String,
-      default: ''
+      default: ""
     },
     // 会话内消息卡片标题，open-type="contact"时有效
     // 默认当前标题，只微信小程序有效
     sendMessageTitle: {
       type: String,
-      default: ''
+      default: ""
     },
     // 会话内消息卡片点击跳转小程序路径，open-type="contact"时有效
     // 默认当前分享路径，只微信小程序有效
     sendMessagePath: {
       type: String,
-      default: ''
+      default: ""
     },
     // 会话内消息卡片图片，open-type="contact"时有效
     // 默认当前页面截图，只微信小程序有效
     sendMessageImg: {
       type: String,
-      default: ''
+      default: ""
     },
     // 是否显示会话内消息卡片，设置此参数为 true，用户进入客服会话会在右下角显示"可能要发送的小程序"提示，
     // 用户点击后可以快速发送小程序消息，open-type="contact"时有效
@@ -188,12 +187,12 @@ export default {
     // 手指按（触摸）按钮时按钮时的背景颜色
     hoverBgColor: {
       type: String,
-      default: ''
+      default: ""
     },
     // 水波纹的背景颜色
     rippleBgColor: {
       type: String,
-      default: ''
+      default: ""
     },
     // 是否开启水波纹效果
     ripple: {
@@ -203,19 +202,19 @@ export default {
     // 按下的类名
     hoverClass: {
       type: String,
-      default: ''
+      default: ""
     },
     // 自定义样式，对象形式
     customStyle: {
       type: Object,
       default() {
-        return {}
+        return {};
       }
     },
     // 额外传参参数，用于小程序的data-xxx属性，通过target.dataset.name获取
     dataName: {
       type: String,
-      default: ''
+      default: ""
     },
     // 节流，一定时间内只能触发一次
     throttleTime: {
@@ -237,34 +236,33 @@ export default {
   watch: {
     freeze: {
       handler(val) {
-        if (!val) return
-        this.uuid = this.$u.guid()
+        if (!val) return;
+        this.uuid = this.$u.guid();
       },
       immediate: true
-    },
-    isRequestAccess(val) {
-      if (!this.freeze) return
-      this.freezeState = !val ? false : val === this.uuid
     }
   },
   computed: {
-    ...mapState({
-      isRequestAccess: state => state.common.isRequestAccess
-    }),
     // 当没有传bgColor变量时，按钮按下去的颜色类名
     getHoverClass() {
       // 如果开启水波纹效果，则不启用hover-class效果
-      if (this.loading || this.disabled || this.ripple || this.hoverClass) return ''
-      let hoverClass = ''
-      hoverClass = this.plain ? 'u-' + this.type + '-plain-hover' : 'u-' + this.type + '-hover'
-      return hoverClass
+      if (this.loading || this.disabled || this.ripple || this.hoverClass)
+        return "";
+      let hoverClass = "";
+      hoverClass = this.plain
+        ? "u-" + this.type + "-plain-hover"
+        : "u-" + this.type + "-hover";
+      return hoverClass;
     },
     // 在'primary', 'success', 'error', 'warning'类型下，不显示边框，否则会造成四角有毛刺现象
     showHairLineBorder() {
-      if (['primary', 'success', 'error', 'warning'].indexOf(this.type) >= 0 && !this.plain) {
-        return ''
+      if (
+        ["primary", "success", "error", "warning"].indexOf(this.type) >= 0 &&
+        !this.plain
+      ) {
+        return "";
       } else {
-        return 'u-hairline-border'
+        return "u-hairline-border";
       }
     }
   },
@@ -276,107 +274,103 @@ export default {
       rippleLeft: 0, // 水波纹起点X坐标到按钮左边界的距离
       fields: {}, // 波纹按钮节点信息
       waveActive: false // 激活水波纹
-    }
+    };
   },
   methods: {
-    ...mapMutations({
-      setRequestStatus: 'common/setRequestStatus'
-    }),
     // 按钮点击
     click(e) {
       // 进行节流控制，每this.throttle毫秒内，只在开始处执行
       this.$u.throttle(() => {
-        if (this.freezeState) return
+        if (this.freezeState) return;
         // 如果按钮时disabled和loading状态，不触发水波纹效果
-        if (this.loading === true || this.disabled === true) return
+        if (this.loading === true || this.disabled === true) return;
         // 是否开启水波纹效果
         if (this.ripple) {
           // 每次点击时，移除上一次的类，再次添加，才能触发动画效果
-          this.waveActive = false
+          this.waveActive = false;
           this.$nextTick(function () {
-            this.getWaveQuery(e)
-          })
+            this.getWaveQuery(e);
+          });
         }
         if (this.freeze) {
-          this.setRequestStatus(this.uuid)
         }
-        this.$emit('click', e)
-      }, this.throttleTime)
+        this.$emit("click", e);
+      }, this.throttleTime);
     },
     // 查询按钮的节点信息
     getWaveQuery(e) {
-      this.getElQuery().then(res => {
+      this.getElQuery().then((res) => {
         // 查询返回的是一个数组节点
-        let data = res[0]
+        let data = res[0];
         // 查询不到节点信息，不操作
-        if (!data || !data.width) return
+        if (!data || !data.width) return;
         // 水波纹的最终形态是一个正方形(通过border-radius让其变为一个圆形)，这里要保证正方形的边长等于按钮的最长边
         // 最终的方形（变换后的圆形）才能覆盖整个按钮
-        data.targetWidth = data.height > data.width ? data.height : data.width
-        if (!data.targetWidth) return
-        this.fields = data
-        let touchesX = '',
-          touchesY = ''
+        data.targetWidth = data.height > data.width ? data.height : data.width;
+        if (!data.targetWidth) return;
+        this.fields = data;
+        let touchesX = "",
+          touchesY = "";
         // #ifdef MP-BAIDU
-        touchesX = e.changedTouches[0].clientX
-        touchesY = e.changedTouches[0].clientY
+        touchesX = e.changedTouches[0].clientX;
+        touchesY = e.changedTouches[0].clientY;
         // #endif
         // #ifdef MP-ALIPAY
-        touchesX = e.detail.clientX
-        touchesY = e.detail.clientY
+        touchesX = e.detail.clientX;
+        touchesY = e.detail.clientY;
         // #endif
         // #ifndef MP-BAIDU || MP-ALIPAY
-        touchesX = e.touches[0].clientX
-        touchesY = e.touches[0].clientY
+        touchesX = e.touches[0].clientX;
+        touchesY = e.touches[0].clientY;
         // #endif
         // 获取触摸点相对于按钮上边和左边的x和y坐标，原理是通过屏幕的触摸点（touchesY），减去按钮的上边界data.top
         // 但是由于`transform-origin`默认是center，所以这里再减去半径才是水波纹view应该的位置
         // 总的来说，就是把水波纹的矩形（变换后的圆形）的中心点，移动到我们的触摸点位置
-        this.rippleTop = touchesY - data.top - data.targetWidth / 2
-        this.rippleLeft = touchesX - data.left - data.targetWidth / 2
+        this.rippleTop = touchesY - data.top - data.targetWidth / 2;
+        this.rippleLeft = touchesX - data.left - data.targetWidth / 2;
         this.$nextTick(() => {
-          this.waveActive = true
-        })
-      })
+          this.waveActive = true;
+        });
+      });
     },
     // 获取节点信息
     getElQuery() {
-      return new Promise(resolve => {
-        let queryInfo = ''
+      return new Promise((resolve) => {
+        let queryInfo = "";
         // 获取元素节点信息，请查看uniapp相关文档
         // https://uniapp.dcloud.io/api/ui/nodes-info?id=nodesrefboundingclientrect
-        queryInfo = uni.createSelectorQuery().in(this)
+        queryInfo = uni.createSelectorQuery().in(this);
         //#ifdef MP-ALIPAY
-        queryInfo = uni.createSelectorQuery()
+        queryInfo = uni.createSelectorQuery();
         //#endif
-        queryInfo.select('.u-btn').boundingClientRect()
-        queryInfo.exec(data => {
-          resolve(data)
-        })
-      })
+        queryInfo.select(".u-btn").boundingClientRect();
+        queryInfo.exec((data) => {
+          resolve(data);
+        });
+      });
     },
     // 下面为对接uniapp官方按钮开放能力事件回调的对接
     getphonenumber(res) {
-      this.$emit('getphonenumber', res)
+      this.$emit("getphonenumber", res);
     },
     getuserinfo(res) {
-      this.$emit('getuserinfo', res)
+      this.$emit("getuserinfo", res);
     },
     error(res) {
-      this.$emit('error', res)
+      this.$emit("error", res);
     },
     opensetting(res) {
-      this.$emit('opensetting', res)
+      this.$emit("opensetting", res);
     },
     launchapp(res) {
-      this.$emit('launchapp', res)
+      this.$emit("launchapp", res);
     }
   }
-}
+};
 </script>
 
 <style scoped lang="scss">
-@import '../../libs/css/style.components.scss';
+@import "../../libs/css/style.components.scss";
 .u-btn::after {
   border: none;
 }
@@ -491,7 +485,7 @@ export default {
 }
 
 .u-hairline-border:after {
-  content: ' ';
+  content: " ";
   position: absolute;
   pointer-events: none;
   // 设置为border-box，意味着下面的scale缩小为0.5，实际上缩小的是伪元素的内容（border-box意味着内容不含border）

@@ -39,12 +39,10 @@
       v-if="isFixed && !immersive"
       :style="{ width: '100%', height: Number(navbarHeight) + statusBarHeight + 'px' }"
     ></view>
-    <Upgrade ref="upgrade" />
   </view>
 </template>
 
 <script>
-import Upgrade from '@/components/upgrade/index.vue'
 
 // 获取系统状态栏的高度
 let systemInfo = uni.getSystemInfoSync()
@@ -80,10 +78,6 @@ export default {
   name: 'u-navbar',
   props: {
     // 导航栏高度，单位px，非rpx
-    upgrade: {
-      type: Boolean,
-      default: false
-    },
     height: {
       type: [String, Number],
       default: ''
@@ -184,9 +178,6 @@ export default {
       default: null
     }
   },
-  components: {
-    Upgrade
-  },
   data() {
     return {
       menuButtonInfo: menuButtonInfo,
@@ -247,9 +238,6 @@ export default {
     }
   },
   mounted() {
-    if (this.upgrade) {
-      this.$refs.upgrade.onTriggerCheck()
-    }
   },
   methods: {
     goBack() {

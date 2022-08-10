@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "html2canvas": "1.0.0-rc.5",
+    "css-line-break": "1.1.1",
+    "base64-arraybuffer": "0.2.0"
+  },
+  "devDependencies": {
+    "lodash": "^4.17.21"
+  }
+}
