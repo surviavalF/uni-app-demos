@@ -11,6 +11,9 @@
     },
     {
       "path": "pages/20220810_html2canvas/index"
+    },
+    {
+      "path": "pages/20220810_collapse/index"
     }
   ],
   "globalStyle": {

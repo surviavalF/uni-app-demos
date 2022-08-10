@@ -28,6 +28,10 @@ export default {
     return {
       demosList: [
         {
+          name: "模仿 Collapse 折叠面板",
+          url: "/pages/20220810_collapse/index"
+        },
+        {
           name: "html2canvas截图",
           url: "/pages/20220810_html2canvas/index"
         },
