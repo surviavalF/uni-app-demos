@@ -1,0 +1,145 @@
+.flex_between_center {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.checkbox {
+    position: relative;
+    height: 36rpx;
+    margin-left: 10rpx;
+    margin-right: 0px;
+    width: 36rpx;
+
+    .color {
+        color: $uni-color-primary;
+        background-color: $uni-color-primary;
+    }
+
+    .txt {
+        font-size: 34rpx;
+        line-height: 44rpx;
+        width: 100%;
+        height: 100%;
+        display: flex;
+    }
+}
+
+.checkBorder {
+    border: 1px solid #ecdee4;
+}
+
+.header {
+    width: 100%;
+    position: fixed;
+    background-color: #fff;
+    z-index: 9999;
+
+    .title {
+        height: 90rpx;
+        padding: 0 32rpx;
+        line-height: 90rpx;
+        font-size: 30rpx;
+        background-color: #f7f7f7;
+        color: #606064;
+
+        .iconclass {
+            display: inline-block;
+            margin: 0 12rpx;
+            color: #D0D4DB;
+            font-size: 28rpx;
+        }
+    }
+}
+
+.container-list {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding-bottom: 160rpx;
+    padding-top: 120rpx;
+
+    .common {
+        background-color: #fff;
+        border-bottom: 1px solid $uni-bg-color-grey;
+        padding: 20rpx 30rpx;
+
+        .content {
+            display: flex;
+            align-items: center;
+            min-height: 60rpx;
+            width: 100%;
+            padding: 15rpx 0;
+            position: relative;
+            font-size: 32rpx;
+
+            .right {
+                position: absolute;
+                right: 30rpx;
+                color: #babdc3;
+                font-size: 32rpx;
+            }
+        }
+    }
+}
+
+.active {
+    color: $uni-color-primary !important;
+}
+
+.none {
+    color: #666666;
+}
+
+.icon-selected {
+    color: $uni-color-primary !important;
+    font-size: 34rpx !important;
+}
+
+.icons {
+    color: $uni-color-primary !important;
+    font-size: 34rpx !important;
+}
+
+.inline-item {
+    display: inline-block
+}
+
+.content-item {
+    display: flex;
+    position: relative;
+    align-items: center;
+}
+
+.box_sizing {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.btn {
+    position: fixed;
+    bottom: 0;
+    padding: 10px;
+    background-color: #fff;
+    width: 100%;
+
+    .sureBtn {
+        color: #fff;
+    }
+}
+
+.titles {
+    text-align: left;
+    padding: 20rpx 20rpx;
+    font-size: $uni-font-size-base;
+    color: $uni-text-color;
+    font-weight: bold;
+}
+
+.borderAdd {
+    border: 2rpx solid #eaeaea;
+    border-radius: 25rpx;
+    width: 36rpx;
+    height: 36rpx;
+    background-color: #eaeaea;
+}

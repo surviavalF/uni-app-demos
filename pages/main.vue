@@ -28,6 +28,10 @@ export default {
     return {
       demosList: [
         {
+          name: "树结构选择器",
+          url: "/pages/20220812_tree/index"
+        },
+        {
           name: "模仿 Collapse 折叠面板",
           url: "/pages/20220810_collapse/index"
         },
