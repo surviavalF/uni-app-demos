@@ -28,6 +28,10 @@ export default {
     return {
       demosList: [
         {
+          name: "组织架构人员选择器",
+          url: "/pages/20220815_select-user-org/index"
+        },
+        {
           name: "组织架构",
           url: "/pages/20220814_organization/index"
         },

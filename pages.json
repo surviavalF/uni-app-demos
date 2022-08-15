@@ -29,6 +29,9 @@
     },
     {
       "path": "pages/20220814_organization/organization/index"
+    },
+    {
+      "path": "pages/20220815_select-user-org/index"
     }
   ],
   "globalStyle": {
