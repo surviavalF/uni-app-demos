@@ -28,6 +28,14 @@ export default {
     return {
       demosList: [
         {
+          name: "组织架构",
+          url: "/pages/20220814_organization/index"
+        },
+        {
+          name: "pdf查看",
+          url: "/pages/20220814_pdf-preview/index"
+        },
+        {
           name: "树结构选择器",
           url: "/pages/20220812_tree/index"
         },
