@@ -4,10 +4,22 @@
     <view class="pageData">
       <u-form :model="DataForm" ref="uForm" class="container__item">
         <u-form-item label="人员">
-          <OrgUserSelect v-model="userSelect" />
+          <OrgUserSelect
+            v-model="userSelect"
+            :props="props"
+            :max="max"
+            :chooseAdminOpen="true"
+            :chooseSubOpen="false"
+            :checked="DataForm.userCheckedList"
+            :returnData="true"
+            @confirm="confirms"
+          />
           <u-icon name="arrow-right" class="icon" />
         </u-form-item>
       </u-form>
+      <text>
+        {{ DataForm.userCheckedList }}
+      </text>
     </view>
   </view>
 </template>
@@ -23,16 +35,38 @@ export default {
   data() {
     return {
       DataForm: {
-        userList: []
+        userCheckedList: []
       },
-      userSelect: false
+      userSelect: false,
+      props: {
+        label: "organName", //当前部门名字的字段名称
+        children: "children", //当前部门的子部门的字段名称
+        checkDataId: "organId", //部门的唯一标识的字段名称
+        userId: "accountId" //人员唯一标识的字段名称
+      },
+      max: 99
     };
   },
-  methods: {}
+  methods: {
+    //确定
+    confirms(val) {
+      console.log("val", val);
+      this.DataForm.userCheckedList = val;
+      this.userSelect = false;
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>
 .main {
   background: #f6f6f6;
+  .pageData {
+    margin: 20rpx;
+    padding: 20rpx;
+    background: #fff;
+    text{
+      padding-top: 40rpx;
+    }
+  }
 }
 </style>

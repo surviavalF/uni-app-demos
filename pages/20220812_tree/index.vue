@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import treeDataList from "./treeData.js";
+import treeDataList from "./data/treeData.js";
 import XiaoluTree from "./xiaolu-tree/tree.vue";
 export default {
   onLoad() {

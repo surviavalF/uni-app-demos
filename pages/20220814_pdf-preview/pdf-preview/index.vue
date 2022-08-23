@@ -2,7 +2,7 @@
   <div class="pdf-preview-page">
     <u-navbar :title="name">
       <view slot="right" class="button-group">
-        <u-icon class="button-group__close" name="/static/icon/applet/c1ose.png" @click="onClose"></u-icon>
+        <u-icon class="button-group__close" name="close" @click="onClose"></u-icon>
       </view>
     </u-navbar>
   </div>

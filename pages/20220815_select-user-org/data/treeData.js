@@ -22,7 +22,32 @@ var treeDataList = [
                 organLevel: 2,
                 organSort: 0,
                 userNumber: "0",
-                userList: null
+                userList: [
+                    {
+                        accountId: "111122",
+                        check: false,
+                        isMain: false,
+                        isSub: false,
+                        organNames: [],
+                        prefix: "1",
+                        userIcon: "",
+                        userId: "111",
+                        userMobilePhone: "15542419308",
+                        userName: "部门1155张",
+                    },
+                    {
+                        accountId: "112222",
+                        check: false,
+                        isMain: false,
+                        isSub: false,
+                        organNames: [],
+                        prefix: "1",
+                        userIcon: "",
+                        userId: "2222",
+                        userMobilePhone: "15542419308",
+                        userName: "部门1155张2",
+                    }
+                ]
             },
             {
                 children: [
@@ -61,12 +86,37 @@ var treeDataList = [
         ],
         organId: "241e7066b90fd9220102fd36f1771df7",
         parentId: "-1",
-        organName: "测试数据",
+        organName: "测试数据公司",
         organType: "COMPANY",
         organLevel: 1,
         organSort: 0,
         userNumber: "1",
-        userList: null
+        userList: [
+            {
+                accountId: "1111",
+                check: false,
+                isMain: false,
+                isSub: true,
+                organNames: [],
+                prefix: "1",
+                userIcon: "",
+                userId: "111",
+                userMobilePhone: "15542419308",
+                userName: "测试数据公司155张",
+            },
+            {
+                accountId: "2222",
+                check: false,
+                isMain: true,
+                isSub: false,
+                organNames: [],
+                prefix: "1",
+                userIcon: "",
+                userId: "2222",
+                userMobilePhone: "15542419308",
+                userName: "测试数据公司155张2",
+            }
+        ]
     }
 ]
 
