@@ -11,7 +11,6 @@
             :chooseAdminOpen="true"
             :chooseSubOpen="false"
             :checked="DataForm.userCheckedList"
-            :returnData="true"
             @confirm="confirms"
           />
           <u-icon name="arrow-right" class="icon" />

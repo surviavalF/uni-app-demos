@@ -1,122 +1,102 @@
 var treeDataList = [
     {
-        children: [
+        "children": [
             {
-                children: [
+                "children": [
                     {
-                        children: null,
-                        organId: "478bf992dfc6ad33d202e16793fcbff8",
-                        parentId: "fa4b0c12a1b1fb759aadc27880f5ebae",
-                        organName: "部门1-1",
-                        organType: "DEPT",
-                        organLevel: 3,
-                        organSort: 0,
-                        userNumber: "0",
-                        userList: null
-                    }
-                ],
-                organId: "fa4b0c12a1b1fb759aadc27880f5ebae",
-                parentId: "241e7066b90fd9220102fd36f1771df7",
-                organName: "部门1",
-                organType: "DEPT",
-                organLevel: 2,
-                organSort: 0,
-                userNumber: "0",
-                userList: [
-                    {
-                        accountId: "111122",
-                        check: false,
-                        isMain: false,
-                        isSub: false,
-                        organNames: [],
-                        prefix: "1",
-                        userIcon: "",
-                        userId: "111",
-                        userMobilePhone: "15542419308",
-                        userName: "部门1155张",
+                        "children": [],
+                        "userList": [
+                            {
+                                "accountId": "11f76ea35e1a826e97e771ce5d1de668",
+                                "check": false,
+                                "organNames": [],
+                                "userMobilePhone": "16891561879",
+                                "userName": "测试成员2",
+                                "isMain": false,
+                                "isSub": false
+                            }
+                        ],
+                        "organId": "3825e7e29ac373da41b91986393ba3e9",
+                        "parentId": "6dc81804231a782f0d39fc8203158e56",
+                        "organName": "测试部门1-1",
+                        "organType": "DEPT",
+                        "organLevel": 3,
+                        "organSort": 0,
+                        "userNumber": "1"
                     },
                     {
-                        accountId: "112222",
-                        check: false,
-                        isMain: false,
-                        isSub: false,
-                        organNames: [],
-                        prefix: "1",
-                        userIcon: "",
-                        userId: "2222",
-                        userMobilePhone: "15542419308",
-                        userName: "部门1155张2",
+                        "children": [],
+                        "userList": [],
+                        "organId": "5a18df55acae97d0f2f81e8f2aed507d",
+                        "parentId": "6dc81804231a782f0d39fc8203158e56",
+                        "organName": "测试部门1-2",
+                        "organType": "DEPT",
+                        "organLevel": 3,
+                        "organSort": 1,
+                        "userNumber": "0"
                     }
-                ]
+                ],
+                "userList": [
+                    {
+                        "accountId": "f629c7865f4865cdfcb68275bfdbfda9",
+                        "check": false,
+                        "organNames": [],
+                        "userMobilePhone": "15654874615",
+                        "userName": "测试成员1",
+                        "isMain": false,
+                        "isSub": false
+                    }
+                ],
+                "organId": "6dc81804231a782f0d39fc8203158e56",
+                "parentId": "d5b2d6a1e9eac2f0af64253a6d22abbf",
+                "organName": "测试部门1",
+                "organType": "DEPT",
+                "organLevel": 2,
+                "organSort": 0,
+                "userNumber": "1"
             },
             {
-                children: [
+                "children": [
                     {
-                        children: null,
-                        organId: "9b55ad600cc01cdc5db94bf8e9b310d7",
-                        parentId: "47f9460516e6de390f2758f3e3c807bf",
-                        organName: "部门2-1",
-                        organType: "DEPT",
-                        organLevel: 3,
-                        organSort: 0,
-                        userNumber: "0",
-                        userList: null
-                    },
-                    {
-                        children: null,
-                        organId: "994e1df382b7ef7144bcad43d6ced4d2",
-                        parentId: "47f9460516e6de390f2758f3e3c807bf",
-                        organName: "部门2-2",
-                        organType: "DEPT",
-                        organLevel: 3,
-                        organSort: 1,
-                        userNumber: "0",
-                        userList: null
+                        "children": [],
+                        "userList": [],
+                        "organId": "8e1a79cb9c9b21d68b9aed85904c9ccd",
+                        "parentId": "c485ee4b523acf5fcbeda343948d9129",
+                        "organName": "测试班组2-1",
+                        "organType": "TEAM",
+                        "organLevel": 3,
+                        "organSort": 0,
+                        "userNumber": "0"
                     }
                 ],
-                organId: "47f9460516e6de390f2758f3e3c807bf",
-                parentId: "241e7066b90fd9220102fd36f1771df7",
-                organName: "部门2",
-                organType: "DEPT",
-                organLevel: 2,
-                organSort: 1,
-                userNumber: "0",
-                userList: null
+                "userList": [],
+                "organId": "c485ee4b523acf5fcbeda343948d9129",
+                "parentId": "d5b2d6a1e9eac2f0af64253a6d22abbf",
+                "organName": "测试部门2",
+                "organType": "DEPT",
+                "organLevel": 2,
+                "organSort": 1,
+                "userNumber": "0"
             }
         ],
-        organId: "241e7066b90fd9220102fd36f1771df7",
-        parentId: "-1",
-        organName: "测试数据公司",
-        organType: "COMPANY",
-        organLevel: 1,
-        organSort: 0,
-        userNumber: "1",
-        userList: [
+        "userList": [
             {
-                accountId: "1111",
-                check: false,
-                isMain: false,
-                isSub: true,
-                organNames: [],
-                prefix: "1",
-                userIcon: "",
-                userId: "111",
-                userMobilePhone: "15542419308",
-                userName: "测试数据公司155张",
-            },
-            {
-                accountId: "2222",
-                check: false,
-                isMain: true,
-                isSub: false,
-                organNames: [],
-                prefix: "1",
-                userIcon: "",
-                userId: "2222",
-                userMobilePhone: "15542419308",
-                userName: "测试数据公司155张2",
+                "accountId": "bdeb6116bddf094cb1b46e306e929ea4",
+                "check": false,
+                "organNames": [],
+                "userMobilePhone": "15542419308",
+                "userName": "155zyf2",
+                "isMain": true,
+                "isSub": false
             }
-        ]
+        ],
+        "organId": "d5b2d6a1e9eac2f0af64253a6d22abbf",
+        "parentId": "-1",
+        "organName": "测试企业2",
+        "organType": "COMPANY",
+        "organLevel": 1,
+        "organSort": 0,
+        "userNumber": "1"
     }
 ]
 

@@ -1,6 +1,8 @@
 <template>
   <view class="org-user-select">
     <u-input
+      maxlength="99999999"
+      type="textarea"
       :value="tips"
       disabled
       @click="onOpen"
@@ -55,9 +57,9 @@
             </scroll-view>
           </view>
         </view>
-        <view>
-          <view class="container-list">
-            <!-- 部门 -->
+        <scroll-view scroll-y class="container-list">
+          <!-- 部门 -->
+          <template v-show="!isEmpty(tree)">
             <view
               class="common"
               v-for="(item, index) in tree"
@@ -70,9 +72,11 @@
                 <view class="right"><i class="iconfont icon-z043"></i></view>
               </label>
             </view>
-            <!-- 人员 -->
-            <view class="userGroup"></view>
-            <template v-if="oldUserList && oldUserList.length > 0">
+          </template>
+
+          <!-- 人员 -->
+          <view class="userGroup" v-if="oldUserList && oldUserList.length > 0">
+            <template>
               <view
                 class="common"
                 v-for="(userItem, userIndex) in oldUserList"
@@ -118,9 +122,10 @@
                 </label>
               </view>
             </template>
-            <view v-else class="empty"> 当前层级下没有成员 </view>
           </view>
-        </view>
+
+          <view v-else class="empty"> 当前层级下没有成员 </view>
+        </scroll-view>
         <view class="btn box_sizing">
           <u-button type="primary" @click="backConfirm">
             <text v-if="showLimit">
@@ -207,14 +212,21 @@ export default {
     },
     checked: {
       handler(val) {
-        this.tips =
-          this.checked && this.checked.length > 0 ? "已选择" : "未选择";
-      }
+        const self = this;
+        if (!_.isEmpty(self.checked)) {
+          self.setUserNameList();
+        } else {
+          self.tips = "未选择";
+        }
+      },
+      deep: true,
+      imediate: true
     }
   },
   components: {},
   data() {
     return {
+      isEmpty: _.isEmpty,
       popupShow: false, //弹窗显隐
       tips: "未选择",
 
@@ -224,7 +236,8 @@ export default {
       allData: [], //记录原始数据
       oldUserList: [], //当前部门的人员列表
       newCheckList: [], //已选择的列表
-      allUserList: [] //全部人员数据
+      allUserList: [], //全部人员数据
+      userNameList: ""
     };
   },
   methods: {
@@ -331,17 +344,227 @@ export default {
       } else {
         this.$emit("confirm", this.newCheckList);
       }
+    },
+    async setUserNameList() {
+      this.userNameList = "";
+      if (this.allUserList.length == 0) {
+        this.allUserList = userDataList;
+      }
+
+      this.checked.forEach((eItem) => {
+        this.allUserList.forEach((uItem) => {
+          console.log("eItem",eItem);
+          console.log("uItem",uItem);
+          if (uItem.accountId == eItem) {
+            if (this.userNameList == "") {
+              this.userNameList = uItem.userName;
+            } else {
+              this.userNameList = this.userNameList + "," + uItem.userName;
+            }
+          }
+        });
+      });
+      console.log("this.userNameList", this.allUserList);
+      console.log("this.userNameList", this.userNameList);
+      this.tips = this.userNameList;
     }
   }
 };
 </script>
 <style lang="scss" scoped>
-@import "./css/style.scss";
 @import url("./css/icon.css");
+.flex_between_center {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.checkbox {
+  position: relative;
+  height: 36rpx;
+  margin-left: 10rpx;
+  margin-right: 0px;
+  width: 36rpx;
+
+  .color {
+    color: $uni-color-primary;
+    background-color: $uni-color-primary;
+  }
+
+  .txt {
+    font-size: 34rpx;
+    line-height: 44rpx;
+    width: 100%;
+    height: 100%;
+    display: flex;
+  }
+}
+
+.checkBorder {
+  border: 1px solid #ecdee4;
+}
+
+.poupIn {
+  position: relative;
+  height: 100%;
+}
+
+.header {
+  width: 100%;
+  top: 0;
+  left: 0;
+  position: absolute;
+  background-color: #fff;
+  z-index: 3;
+
+  .titleText {
+    text-align: left;
+    padding: 20rpx 20rpx;
+    font-size: $uni-font-size-base;
+    color: $uni-text-color;
+    font-weight: bold;
+    z-index: 20;
+  }
+
+  .title {
+    height: 90rpx;
+    padding: 0 32rpx;
+    line-height: 90rpx;
+    font-size: 30rpx;
+    background-color: #f7f7f7;
+    color: #606064;
+
+    .iconclass {
+      display: inline-block;
+      margin: 0 12rpx;
+      color: #d0d4db;
+      font-size: 28rpx;
+    }
+  }
+}
+
+.container-list {
+  position: absolute;
+  top: 180rpx;
+  left: 0;
+  width: 100%;
+  height: 440px;
+
+  .common {
+    background-color: #fff;
+    border-bottom: 1px solid $uni-bg-color-grey;
+    padding: 20rpx 30rpx;
+
+    .content {
+      display: flex;
+      align-items: center;
+      min-height: 60rpx;
+      width: 100%;
+
+      position: relative;
+      font-size: 32rpx;
+
+      .content-item {
+        display: flex;
+        position: relative;
+        align-items: center;
+        overflow: hidden;
+        white-space: normal;
+        word-wrap: break-word;
+        word-break: break-all;
+        text-overflow: ellipsis;
+      }
+
+      .right {
+        color: #babdc3;
+        font-size: 32rpx;
+      }
+    }
+
+    .branch {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+
+  .userGroup {
+    padding: 10rpx;
+    background: #f7f7f7;
+  }
+
+  .empty {
+    color: #999999;
+    text-align: center;
+    padding: 20rpx 0;
+  }
+}
+
+.active {
+  color: $uni-color-primary !important;
+}
+
+.none {
+  color: #666666;
+}
+
+.icon-selected {
+  color: $uni-color-primary !important;
+  font-size: 34rpx !important;
+}
+
+.icons {
+  color: $uni-color-primary !important;
+  font-size: 34rpx !important;
+}
+
+.inline-item {
+  display: inline-block;
+}
+
+.content-item {
+  display: flex;
+  position: relative;
+  align-items: center;
+}
+
+.box_sizing {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.btn {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding-top: 20rpx;
+  padding-left: 20rpx;
+  padding-right: 20rpx;
+  padding-bottom: 20rpx;
+  background-color: #fff;
+  width: 100%;
+
+  z-index: 4;
+  .sureBtn {
+    color: #fff;
+  }
+}
+
+.borderAdd {
+  border: 2rpx solid #eaeaea;
+  border-radius: 25rpx;
+  width: 36rpx;
+  height: 36rpx;
+  background-color: #eaeaea;
+}
 .org-user-select {
   flex: 1;
   .btnCheck {
     display: none;
   }
+  /deep/ .u-input__textarea {
+    min-height: auto !important;
+  }
+  margin-right: 30rpx;
 }
 </style>
