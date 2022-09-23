@@ -7,31 +7,34 @@
       "path": "pages/main"
     },
     {
-      "path": "pages/20220810_qrcode/index"
+      "path": "pages/20220922_create-uuid/index"
     },
     {
-      "path": "pages/20220810_html2canvas/index"
-    },
-    {
-      "path": "pages/20220810_collapse/index"
-    },
-    {
-      "path": "pages/20220812_tree/index"
-    },
-    {
-      "path": "pages/20220814_pdf-preview/index"
-    },
-    {
-      "path": "pages/20220814_pdf-preview/pdf-preview/index"
-    },
-    {
-      "path": "pages/20220814_organization/index"
+      "path": "pages/20220815_select-user-org/index"
     },
     {
       "path": "pages/20220814_organization/organization/index"
     },
     {
-      "path": "pages/20220815_select-user-org/index"
+      "path": "pages/20220814_organization/index"
+    },
+    {
+      "path": "pages/20220814_pdf-preview/pdf-preview/index"
+    },
+    {
+      "path": "pages/20220814_pdf-preview/index"
+    },
+    {
+      "path": "pages/20220812_tree/index"
+    },
+    {
+      "path": "pages/20220810_collapse/index"
+    },
+    {
+      "path": "pages/20220810_html2canvas/index"
+    },
+    {
+      "path": "pages/20220810_qrcode/index"
     }
   ],
   "globalStyle": {

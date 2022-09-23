@@ -28,6 +28,10 @@ export default {
     return {
       demosList: [
         {
+          name: "生成uuid",
+          url: "/pages/20220922_create-uuid/index"
+        },
+        {
           name: "组织架构人员选择器",
           url: "/pages/20220815_select-user-org/index"
         },
