@@ -1,5 +1,5 @@
 <template>
-  <view class="qrcode">
+  <view class="page qrcode">
     <u-navbar is-back title="生成二维码" />
     <view class="qrcode_data">
       <view class="input">
@@ -65,8 +65,6 @@ export default {
 <style lang="scss" scoped>
 .qrcode {
   width: 100%;
-  height: 100vh;
-  background: #f6f6f6;
   &_data {
     margin: 20rpx;
     display: flex;

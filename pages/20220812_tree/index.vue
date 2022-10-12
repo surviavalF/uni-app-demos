@@ -100,6 +100,5 @@ export default {
 </script>
 <style lang="scss" scoped>
 .main {
-  background: #f6f6f6;
 }
 </style>

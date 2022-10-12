@@ -125,9 +125,7 @@ export default {
 <style lang="scss" scoped>
 .qr-wrap {
   width: 100%;
-  background: #f6f6f6;
   .grid-container {
-    background-color: #f6f6f6;
     padding: 30rpx;
     .onceCollapse {
       overflow: hidden;

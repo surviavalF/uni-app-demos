@@ -80,7 +80,6 @@ export default {
 
 <style lang="scss">
 .mine-page {
-  background: #f6f6f6;
   width: 100%;
   overflow: auto;
   padding-bottom: calc(100rpx + env(safe-area-inset-bottom));
