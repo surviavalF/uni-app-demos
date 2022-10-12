@@ -200,7 +200,7 @@ import areas from "../../libs/util/area.js";
  * @property {Boolean} safe-area-inset-bottom 是否开启底部安全区适配（默认false）
  * @property {Boolean} show-time-tag 时间模式时，是否显示后面的年月日中文提示
  * @property {String} cancel-color 取消按钮的颜色（默认#606266）
- * @property {String} confirm-color 确认按钮的颜色（默认#ff6a00）
+ * @property {String} confirm-color 确认按钮的颜色（默认#4986fb）
  * @property {String} default-time 默认选中的时间，mode=time时有效
  * @property {String} confirm-text 确认按钮的文字
  * @property {String} cancel-text 取消按钮的文字
@@ -278,7 +278,7 @@ export default {
     // "确定"按钮的颜色
     confirmColor: {
       type: String,
-      default: "#ff6a00"
+      default: "#4986fb"
     },
     // 默认显示的时间，2025-07-02 || 2025-07-02 13:01:00 || 2025/07/02
     defaultTime: {

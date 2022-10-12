@@ -81,7 +81,7 @@ export default {
   data() {
     return {
       active: false, // 当前项是否处于展开状态
-      activeColor: '#ff6a00', // 激活时左边文字和右边对勾图标的颜色
+      activeColor: '#4986fb', // 激活时左边文字和右边对勾图标的颜色
       inactiveColor: '#606266' // 未激活时左边文字和右边对勾图标的颜色
     }
   },

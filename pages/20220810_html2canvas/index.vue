@@ -51,7 +51,7 @@
       >
         <u-avatar
           :text="item.btnName"
-          bg-color="#ff6a00"
+          bg-color="#4986fb"
           size="80"
           mode="circle"
         ></u-avatar>

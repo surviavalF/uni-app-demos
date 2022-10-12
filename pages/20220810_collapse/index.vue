@@ -166,7 +166,7 @@ export default {
           }
         }
         &_right {
-          background: #ff6a00;
+          background: #4986fb;
           color: #fff;
           border-radius: 50rpx;
           font-size: 24rpx;

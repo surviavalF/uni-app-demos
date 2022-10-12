@@ -64,7 +64,7 @@
                 <u-avatar
                   v-else
                   :text="item.userName"
-                  bg-color="#ff6a00"
+                  bg-color="#4986fb"
                   size="large"
                   mode="circle"
                 ></u-avatar>
@@ -96,7 +96,7 @@
                 <u-avatar
                   v-else
                   :text="item.userName"
-                  bg-color="#ff6a00"
+                  bg-color="#4986fb"
                   size="large"
                   mode="circle"
                 ></u-avatar>
@@ -386,9 +386,9 @@ export default {
         }
       }
       /deep/.u-action {
-        color: #ff6a00;
+        color: #4986fb;
         background: #fff;
-        border: 1rpx solid #ff6a00;
+        border: 1rpx solid #4986fb;
         padding: 6rpx;
         border-radius: 40rpx;
         height: 70rpx !important;

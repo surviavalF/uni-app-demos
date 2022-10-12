@@ -37,7 +37,7 @@
                     >
                       <view class="avatar">
                         <u-avatar v-if="cell.userIcon" :src="cell.userIcon" size="mini"></u-avatar>
-                        <u-avatar v-else :text="cell.userName" bg-color="#ff6a00" size="mini"></u-avatar>
+                        <u-avatar v-else :text="cell.userName" bg-color="#4986fb" size="mini"></u-avatar>
                       </view>
                       <view class="label">{{ cell.userName }} (主管理员)</view>
                     </u-checkbox>
@@ -46,7 +46,7 @@
                     <u-checkbox :value="!!cell.checked" :disabled="chooseOpen" shape="circle" wrap>
                       <view class="avatar">
                         <u-avatar v-if="cell.userIcon" :src="cell.userIcon" size="mini"></u-avatar>
-                        <u-avatar v-else :text="cell.userName" bg-color="#ff6a00" size="mini"></u-avatar>
+                        <u-avatar v-else :text="cell.userName" bg-color="#4986fb" size="mini"></u-avatar>
                       </view>
                       <view class="label">{{ cell.userName }} (子管理员)</view>
                     </u-checkbox>
@@ -55,7 +55,7 @@
                     <u-checkbox :value="!!cell.checked" shape="circle" wrap>
                       <view class="avatar">
                         <u-avatar v-if="cell.userIcon" :src="cell.userIcon" size="mini"></u-avatar>
-                        <u-avatar v-else :text="cell.userName" bg-color="#ff6a00" size="mini"></u-avatar>
+                        <u-avatar v-else :text="cell.userName" bg-color="#4986fb" size="mini"></u-avatar>
                       </view>
                       <view class="label">{{ cell.userName }}</view>
                     </u-checkbox>
