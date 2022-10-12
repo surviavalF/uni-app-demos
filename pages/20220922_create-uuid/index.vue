@@ -3,14 +3,16 @@
     <u-navbar is-back title="生成uuid" />
     <view class="pageData">
       <view class="top">
-        <u-input type="number" v-model="uuidNumber"></u-input>
-        <u-button type="default" @click="uuid()"> 生成uuid </u-button>
-        <u-button type="default" @click="copyUrl()"> 复制uuid </u-button>
+        生成uuid数量: <u-input type="number" v-model="uuidNumber"></u-input>
       </view>
       <view class="bottom" v-if="uuidList.length > 0">
         <view v-for="item in uuidList" :key="item">
           {{ item }}
         </view>
+      </view>
+      <view class="bottom-btn">
+        <u-button type="primary" @click="uuid()"> 生成uuid </u-button>
+        <u-button type="primary" @click="copyUrl()"> 复制uuid </u-button>
       </view>
     </view>
   </view>
@@ -96,15 +98,22 @@ export default {
     height: 100%;
     .top {
       margin: 30rpx;
+      display: flex;
+      align-items: center;
       .u-input {
         background: #fff;
-        margin-bottom: 20rpx;
       }
     }
     .bottom {
       height: 70%;
-      margin: 0 30rpx;
+      margin: 30rpx 30rpx;
       overflow: auto;
+    }
+    .bottom-btn {
+      display: flex;
+      .u-btn {
+        margin: 10rpx;
+      }
     }
   }
 }

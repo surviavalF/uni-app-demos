@@ -1,7 +1,9 @@
 <template>
   <view class="page main">
     <u-navbar is-back title="pdf查看" />
-    <u-button type="default" @click="opnePdf"> 查看pdf </u-button>
+    <view class="bottom-btn">
+      <u-button type="primary" @click="opnePdf"> 查看pdf </u-button>
+    </view>
   </view>
 </template>
 
@@ -22,7 +24,6 @@ export default {
         url: `/pages/20220814_pdf-preview/pdf-preview/index?name=pdf文件&url=${url}`,
         animationType: "slide-in-bottom"
       });
-      // this.isShowPPTPopup = true
     }
   }
 };
@@ -31,6 +32,6 @@ export default {
 <style lang="scss" scoped>
 .main {
   width: 100%;
-  background: #fff;
+  background: #f6f6f6;
 }
 </style>

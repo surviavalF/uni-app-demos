@@ -4,7 +4,9 @@
     <view class="data">
       checkList {{ checkList }}
 
-      <u-button type="primary" ripple freeze @click="toChoose">展开</u-button>
+      <view class="bottom-btn">
+        <u-button type="primary" ripple freeze @click="toChoose">展开</u-button>
+      </view>
     </view>
 
     <view>
@@ -98,5 +100,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .main {
+  background: #f6f6f6;
 }
 </style>

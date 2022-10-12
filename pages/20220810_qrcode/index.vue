@@ -13,7 +13,7 @@
         ></TkiQrcode>
       </view>
       <view class="bottom-btn">
-        <u-button type="default" @click="getCreateGGQrcode">
+        <u-button type="primary" @click="getCreateGGQrcode">
           刷新二维码
         </u-button>
       </view>
@@ -27,7 +27,7 @@ import { pathToBase64 } from "@/utils/image-tools.js";
 export default {
   data() {
     return {
-      qrCodeData: "你想放啥放啥"
+      qrCodeData: "二维码的内容"
     };
   },
   components: {
@@ -65,7 +65,8 @@ export default {
 <style lang="scss" scoped>
 .qrcode {
   width: 100%;
-  background: #fff;
+  height: 100vh;
+  background: #f6f6f6;
   &_data {
     margin: 20rpx;
     display: flex;

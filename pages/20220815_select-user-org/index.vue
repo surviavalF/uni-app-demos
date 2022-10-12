@@ -16,9 +16,7 @@
           <u-icon name="arrow-right" class="icon" />
         </u-form-item>
       </u-form>
-      <text>
-        {{ DataForm.userCheckedList }}
-      </text>
+      <text> 已选人员id {{ DataForm.userCheckedList }} </text>
     </view>
   </view>
 </template>
@@ -63,7 +61,7 @@ export default {
     margin: 20rpx;
     padding: 20rpx;
     background: #fff;
-    text{
+    text {
       padding-top: 40rpx;
     }
   }
