@@ -87,6 +87,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .main {
+  overflow: auto;
   .controlGroup {
     padding: 30rpx;
     p {
