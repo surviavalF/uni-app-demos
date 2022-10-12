@@ -1,65 +1,23 @@
 <template>
   <view class="page main">
-    <u-navbar is-back title="通讯录" />
+    <u-navbar is-back title="组织架构组件" />
     <view class="pageData">
+      <view class="controlGroup"> </view>
       <auto-scroll scroll-y class="scroll">
         <u-cell-group v-if="organLsit.length != 0">
+          <u-cell-item @click="toOrganizationPage()">
+            <view slot="title" class="organLsitTitle">
+              <text class="organName"> 进入根节点 </text>
+            </view>
+          </u-cell-item>
+
           <u-cell-item
             v-for="(item, index) in organLsit"
             :key="index"
             @click="toOrganizationPage(item)"
           >
             <view slot="title" class="organLsitTitle">
-              <text class="organName">
-                {{ item.organName }}
-              </text>
-              <text class="listAccountId">
-                {{ " (" + item.listAccountId.length + "人)" }}
-              </text>
-            </view>
-          </u-cell-item>
-        </u-cell-group>
-        <u-cell-group v-if="organUsersList.length != 0" class="usersList">
-          <u-cell-item
-            :arrow="true"
-            v-for="(item, index) in organUsersList"
-            :key="index"
-            @click="onPreviewMember(item.accountId)"
-          >
-            <view slot="title" class="title">
-              <view class="title_top">
-                <view class="userName"> {{ item.userName }}</view>
-                <view class="userPhone">{{ item.userMobile }}</view>
-              </view>
-              <view class="title_tag">
-                <template v-if="!lodash.isEmpty(item.userRole)">
-                  <u-tag
-                    type="info"
-                    size="mini"
-                    bg-color="#fff"
-                    border-color="#999999"
-                    color="#999999"
-                    v-for="(items, index) in item.userRole"
-                    :key="index"
-                  >
-                    <text>{{ items.label }}</text>
-                  </u-tag>
-                </template>
-              </view>
-            </view>
-            <view slot="icon" class="avatar">
-              <image
-                v-if="item.userIcon"
-                :src="item.userIcon"
-                class="image"
-              ></image>
-              <u-avatar
-                v-else
-                :text="item.userName"
-                bg-color="#ff6a00"
-                size="large"
-                mode="circle"
-              ></u-avatar>
+              <text class="organName"> 进入 {{ item.organName }} </text>
             </view>
           </u-cell-item>
         </u-cell-group>
@@ -73,70 +31,45 @@ import AutoScroll from "@/components/auto-scroll/index";
 import _ from "lodash";
 export default {
   onLoad() {},
-  onShow() {
-    this.getqueryOrganByCurrentUser();
-  },
+  onShow() {},
   components: {
     AutoScroll
   },
   data() {
     return {
       lodash: _,
-      organLsit: [],
-      organUsersList: [],
-      data: {
-        listSysOrgan: [
-          {
-            children: null,
-            organId: "d5d4e21c83f7473a619bd2f93456a413",
-            parentId: "-1",
-            tenantId: "66570ff2da989de183dfcaf20c5e3fb3",
-            organName: "乌拉企业1",
-            parentIds: "EMPTY",
-            organStatus: null,
-            organType: "COMPANY",
-            organLevel: 1,
-            organSort: 0,
-            deleted: false,
-            createPerson: "00c05fdbd21f1555613b478bc706ac56",
-            createDate: "2022-08-15 14:12:14",
-            updatePerson: null,
-            updateDate: null,
-            listAccountId: ["8035cf9418680d5dd63d1dbf8bfc668a"]
-          }
-        ],
-        organUsers: [
-          {
-            userOrganId: "d44a7662a5dc8fa2fb58a1cd583fb587",
-            tenantId: "66570ff2da989de183dfcaf20c5e3fb3",
-            accountId: "8035cf9418680d5dd63d1dbf8bfc668a",
-            userIcon: "",
-            organId: "d5d4e21c83f7473a619bd2f93456a413",
-            userRole: null,
-            isMemeber: true,
-            dutyName: null,
-            deleted: false,
-            createPerson: "00c05fdbd21f1555613b478bc706ac56",
-            createDate: "2022-08-15 14:12:14",
-            updatePerson: null,
-            updateDate: null,
-            userName: "155张",
-            userMobile: "15542419308"
-          }
-        ],
-        mainUserId: "8035cf9418680d5dd63d1dbf8bfc668a",
-        fzr: [],
-        gly: [],
-        fgld: [],
-        gsgly: [],
-        zyfzr: []
-      }
+      organLsit: [
+        {
+          organId: "0-1",
+          parentId: "0",
+          organName: "部门0-1",
+          parentIds: ["0"]
+        },
+        {
+          organId: "0-2-2",
+          parentId: "0-2",
+          organName: "部门0-2-2",
+          parentIds: ["0", "0-2"]
+        }
+      ]
     };
   },
   methods: {
-    getqueryOrganByCurrentUser() {
-      this.organLsit = this.data.listSysOrgan;
-      this.organUsersList = this.data.organUsers;
+    //跳转通讯录内部
+    toOrganizationPage(item) {
+      if (_.isEmpty(item)) {
+        uni.navigateTo({
+          url: "/pages/20220814_organization/organization/index"
+        });
+      } else {
+        uni.navigateTo({
+          url:
+            "/pages/20220814_organization/organization/index?goInStateId=" +
+            item.organId +
+            "&goInPrStateId=" +
+            item.parentIds
+        });
+      }
     }
   }
 };
@@ -149,6 +82,9 @@ export default {
   padding-bottom: calc(100rpx + env(safe-area-inset-bottom));
   display: flex;
   flex-direction: column;
+  .controlGroup {
+    margin-bottom: 30rpx;
+  }
   .pageData {
     flex: 1;
     overflow: hidden;
@@ -257,63 +193,8 @@ export default {
           font-weight: bold;
           margin-right: 10rpx;
         }
-        .listAccountId {
-          color: #999999;
-        }
       }
-      .usersList {
-        margin-top: 30rpx;
-        /deep/.u-cell_title {
-          width: 100% !important;
-        }
-        .title {
-          display: flex;
-          flex-direction: column;
-          &_top {
-            display: flex;
-            .userName {
-              font-weight: bold;
-              padding-right: 30rpx;
-              overflow: hidden;
-              white-space: normal;
-              word-wrap: break-word;
-              word-break: break-all;
-              text-overflow: ellipsis;
-            }
-            .userPhone {
-              color: #4986fb;
-            }
-          }
-          &_tag {
-            display: flex;
-            flex-wrap: wrap;
-            max-height: 40rpx !important;
-            overflow: hidden;
-            .u-tag {
-              margin-bottom: 10rpx;
-              margin-right: 18rpx;
-              flex-shrink: 0;
-              border-radius: 20rpx;
-            }
-          }
-        }
-        .avatar {
-          margin-right: 30rpx;
-          /deep/ .u-avatar {
-            color: #ffffff !important;
-            width: 60rpx !important;
-            height: 60rpx !important;
-            flex: 0 0 60rpx !important;
-          }
-        }
-        .image {
-          width: 62rpx;
-          height: 62rpx;
-          text-align: center;
-          border-radius: 40rpx;
-          display: block;
-        }
-      }
+
       /deep/.u-cell-box {
         padding: 0 30rpx;
         .u-cell-item-box {

@@ -1,16 +1,9 @@
 <template>
-  <view class="page organization-page" :class="{ 'safe-area': !setting }">
-    <u-navbar is-back title="通讯录" :custom-back="finde">
-      <view slot="right" class="navbar-right-box">
-        <template
-          v-if="isAllowAccess('A012') || isMenuAllowAccess('A012', parentId)"
-        >
-          <!-- <text @click="setting = 'true'" v-if="setting != 'true'">管理</text>
-          <text @click="setting = ''" v-else-if="setting === 'true'">取消</text> -->
-        </template>
-        <text @click="show = true" v-else>更多</text>
-      </view>
-    </u-navbar>
+  <view class="page organization-page">
+    <u-navbar is-back title="通讯录" :custom-back="finde"> </u-navbar>
+    <view class="controlGroup">
+      是否点击返回直接返回上一页<u-switch v-model="backcontrol"></u-switch>
+    </view>
     <view v-if="loading" class="loading">
       <u-loading size="42" mode="flower"></u-loading>
     </view>
@@ -42,18 +35,8 @@
               @click="openGroup(item)"
             >
               <view slot="title" class="title">
-                <u-tag
-                  type="info"
-                  mode="dark"
-                  bg-color="#e6e5ea"
-                  color="#6b6b6b"
-                >
-                  <text>{{ item.organType | filterOrganType }}</text>
-                </u-tag>
                 <span class="organ">
-                  {{
-                    item.organName + " (" + item.listAccountId.length + "人)"
-                  }}
+                  {{ item.organName }}
                 </span>
               </view>
             </u-cell-item>
@@ -66,37 +49,10 @@
               :arrow="true"
               v-for="(item, index) in organUsersList"
               :key="index"
-              @click="onPreviewMember(item.accountId)"
             >
               <view slot="title" class="title">
                 <view class="title_top">
                   <view class="userName u-line-1"> {{ item.userName }}</view>
-                  <view class="userPhone">{{ item.userMobile }}</view>
-                </view>
-                <view class="title_tag">
-                  <u-tag
-                    v-if="item.accountId == mainUserId"
-                    type="info"
-                    size="mini"
-                    bg-color="#fff"
-                    border-color="#999999"
-                    color="#999999"
-                  >
-                    <text>主管理员</text>
-                  </u-tag>
-                  <template v-if="!lodash.isEmpty(item.userRole)">
-                    <u-tag
-                      type="info"
-                      size="mini"
-                      bg-color="#fff"
-                      border-color="#999999"
-                      color="#999999"
-                      v-for="(items, index) in item.userRole"
-                      :key="index"
-                    >
-                      <text>{{ items.label }}</text>
-                    </u-tag>
-                  </template>
                 </view>
               </view>
               <view slot="icon" class="avatar">
@@ -125,37 +81,10 @@
               :arrow="true"
               v-for="(item, index) in secrchOrganUsersList"
               :key="index"
-              @click="onPreviewMember(item.accountId)"
             >
               <view slot="title" class="title">
                 <view class="title_top">
                   <view class="userName"> {{ item.userName }}</view>
-                  <view class="userPhone">{{ item.userMobile }}</view>
-                </view>
-                <view class="title_tag">
-                  <u-tag
-                    v-if="item.accountId == mainUserId"
-                    type="info"
-                    size="mini"
-                    bg-color="#fff"
-                    border-color="#999999"
-                    color="#999999"
-                  >
-                    <text>主管理员</text>
-                  </u-tag>
-                  <template v-if="!lodash.isEmpty(item.userRole)">
-                    <u-tag
-                      type="info"
-                      size="mini"
-                      bg-color="#fff"
-                      border-color="#999999"
-                      color="#999999"
-                      v-for="(items, index) in item.userRole"
-                      :key="index"
-                    >
-                      <text>{{ items.label }}</text>
-                    </u-tag>
-                  </template>
                 </view>
               </view>
               <view slot="icon" class="avatar">
@@ -179,21 +108,8 @@
       </scroll-view>
     </view>
 
-    <u-action-sheet
-      :list="list"
-      v-model="show"
-      @click="showExit = true"
-      safe-area-inset-bottom
-    ></u-action-sheet>
     <view style="height: 0"> </view>
     <u-toast ref="uToast" />
-    <u-modal
-      v-model="showExit"
-      content="确定退出该企业？"
-      :show-cancel-button="true"
-      @confirm="onExit"
-      mask-close-able
-    ></u-modal>
   </view>
 </template>
 
@@ -201,320 +117,244 @@
 import breadcrumb from "./common/breadcrumb";
 import _ from "lodash";
 export default {
-  // data() {
-  //   return {
-  //     showExit: false,
-  //     loading: false,
-  //     lodash: _,
-  //     list: [
-  //       {
-  //         text: '退出该企业',
-  //         color: '#ff0000',
-  //         fontSize: 28
-  //       }
-  //     ],
-  //     parentId: '', //部门ID
-  //     show: false,
-  //     setting: '',
-  //     groupList: [],
-  //     organUsersList: [],
-  //     breadcrumbList: [{ organName: '', organId: '' }],
+  data() {
+    return {
+      loading: false,
+      backcontrol: false, //是否直接返回上一页
+      lodash: _,
 
-  //     userSelect3: false,
-  //     userList3: [],
-  //     value: null,
-  //     organType: '',
-  //     goInStateId: '', //点击部门进入的ID
-  //     goInPrStateId: '', //点击部门进入的全部父ID
+      parentId: "", //父节点的部门ID
+      groupList: [], //部门数组
+      organUsersList: [], //人员数组
+      breadcrumbList: [{ organName: "", organId: "" }],
 
-  //     keyword: '', //关键字
-  //     showSecrch: false, //关键字
-  //     secrchOrganUsersList: [],
-  //     mainUserId: ''
-  //   }
-  // },
-  // created() {
-  //   this.breadcrumbList[0].organName = this.current.companyName
-  // },
-  components: {
-    breadcrumb,
+      goInStateId: "", //点击部门进入的ID
+      goInPrStateId: "", //点击部门进入的全部父ID
+
+      keyword: "", //关键字
+      showSecrch: false, //是否显示查询结果
+      secrchOrganUsersList: [] //查询结果数据
+    };
   },
-  // filters: {
-  //   filterOrganType(val) {
-  //     switch (val) {
-  //       case 'COMPANY':
-  //         return '公司'
-  //         break
-  //       case 'DEPT':
-  //         return '部门'
-  //         break
-  //       case 'TEAM':
-  //         return '班组'
-  //         break
-  //       default:
-  //         return ''
-  //         break
-  //     }
-  //   }
-  // },
-  // computed: {
-  //   ...mapState('auth', {
-  //     userInfo: state => state.userData || {}
-  //   }),
-  //   ...mapGetters({
-  //     isAllowAccess: 'auth/isAllowAccess',
-  //     isMenuAllowAccess: 'auth/isMenuAllowAccess',
-  //     current: 'auth/currentCompany'
-  //   })
-  // },
-  // onBackPress({ from }) {
-  //   if (from === 'navigateBack') {
-  //     return false
-  //   }
-  //   this.backToPrePage()
-  //   return true
-  // },
-  // onLoad(options) {
-  //   let { setting, breadcrumb, organId, banzu, goInStateId, goInPrStateId } = options
-  //   this.goInStateId = goInStateId || ''
-  //   this.goInPrStateId = goInPrStateId || ''
-  //   this.setting = setting || ''
-  //   this.parentId = organId || ''
-  //   breadcrumb && this.$set(this, 'breadcrumbList', JSON.parse(breadcrumb))
-  //   this.organType = banzu || ''
-  // },
-  // onShow() {
-  //   this.getSysOrganChilds()
-  // },
-  // watch: {
-  //   keyword(newVal, oldVal) {
-  //     if (newVal == '') {
-  //       this.showSecrch = false
-  //     }
-  //   }
-  // },
-  // methods: {
-  //   ...mapActions({
-  //     getCompanyList: 'auth/getCompanyList'
-  //   }),
-  //   //查询
-  //   searchData(val) {
-  //     if (val == 'search') {
-  //       this.showSecrch = true
-  //       this.secrchOrganUsersList = []
-  //       this.organUsersList.forEach(item => {
-  //         if (item.userName.indexOf(this.keyword) > -1) {
-  //           this.secrchOrganUsersList.push(item)
-  //         }
-  //       })
-  //     } else {
-  //       this.showSecrch = false
-  //       this.secrchOrganUsersList = []
-  //     }
-  //   },
-  //   backToPrePage() {
-  //     // if (this.breadcrumbList.length == 1) {
-  //     //   uni.switchTab({ url: '../index' })
-  //     //   return
-  //     // }
-  //     uni.navigateBack({
-  //       delta: 1
-  //     })
-  //   },
-  //   async userCheck3(e) {
-  //     this.userList3 = e.map(item => item.accountId)
-  //     let { data } = await sysOrganOperationBatc({
-  //       organId: this.parentId,
-  //       accountIds: this.userList3
-  //     })
-  //     this.getSysOrganChilds()
-  //   },
-  //   checkPeople() {
-  //     this.$refs.userSelector.onOpen()
-  //   },
-  //   async getSysOrganChilds() {
-  //     this.loading = true
-  //     if (!this.parentId) {
-  //       let { data } = await sysOrganChilds({
-  //         parentId: this.parentId
-  //       })
-  //       this.parentId = data.listSysOrgan[0].organId
-  //       this.mainUserId = data.mainUserId
-  //       this.getSysOrganChilds2()
-  //     } else {
-  //       this.getSysOrganChilds2()
-  //     }
-  //   },
-  //   async getSysOrganChilds2() {
-  //     let { data } = await sysOrganChilds({
-  //       parentId: this.parentId
-  //     })
-  //     this.groupList = data.listSysOrgan
-  //     this.organUsersList = data.organUsers
-  //     this.userList3 = data.organUsers.filter(subitem => subitem.isMemeber).map(item => item.accountId)
-  //     if (this.goInStateId && this.goInStateId != 'undefined' && this.goInStateId != '') {
-  //       this.getOrgin()
-  //     } else {
-  //       this.loading = false
-  //     }
-  //   },
+  created() {
+    this.breadcrumbList[0].organName = "根节点0";
+  },
+  components: {
+    breadcrumb
+  },
+  onBackPress({ from }) {
+    if (from === "navigateBack") {
+      return false;
+    }
+    this.backToPrePage();
+    return true;
+  },
+  onLoad(options) {
+    let { breadcrumb, organId, goInStateId, goInPrStateId } = options;
+    this.goInStateId = goInStateId || "";
+    this.goInPrStateId = goInPrStateId || "";
+    this.parentId = organId || "";
+    breadcrumb && this.$set(this, "breadcrumbList", JSON.parse(breadcrumb));
+  },
+  onShow() {
+    this.getSysOrganChilds();
+  },
+  watch: {
+    keyword(newVal, oldVal) {
+      if (newVal == "") {
+        this.showSecrch = false;
+      }
+    }
+  },
+  methods: {
+    //搜索查询
+    searchData(val) {
+      if (val == "search") {
+        this.showSecrch = true;
+        this.secrchOrganUsersList = [];
+        this.organUsersList.forEach((item) => {
+          if (item.userName.indexOf(this.keyword) > -1) {
+            this.secrchOrganUsersList.push(item);
+          }
+        });
+      } else {
+        this.showSecrch = false;
+        this.secrchOrganUsersList = [];
+      }
+    },
+    backToPrePage() {
+      if (this.breadcrumbList.length == 1) {
+        uni.switchTab({ url: "../index" });
+        return;
+      }
+      uni.navigateBack({
+        delta: 1
+      });
+    },
 
-  //   //外部点击部门进入组织架构
-  //   async getOrgin() {
-  //     var _this = this
-  //     setData()
-  //     function setData() {
-  //       console.log('goInStateId', _this.goInStateId)
-  //       console.log('goInPrStateId', _this.goInPrStateId)
-  //       console.log('parentId', _this.parentId)
-  //       var duplicateId = ''
-  //       _this.groupList.forEach(item => {
-  //         if (_this.goInPrStateId.indexOf(item.organId) != -1) {
-  //           duplicateId = item.organId
-  //           _this.breadcrumbList = _this.breadcrumbList.concat(item)
-  //           _this.breadcrumbList = _this.breadcrumbListUniq()
-  //           return
-  //         } else if (item.organId == _this.goInStateId) {
-  //           _this.breadcrumbList = _this.breadcrumbList.concat(item)
-  //           _this.breadcrumbList = _this.breadcrumbListUniq()
-  //           return
-  //         }
-  //       })
-  //       if (duplicateId != '') {
-  //         sysOrganChilds({
-  //           parentId: duplicateId
-  //         })
-  //           .then(res => {
-  //             _this.groupList = res.data.listSysOrgan
-  //             setData()
-  //           })
-  //           .catch(() => {
-  //             _this.loading = false
-  //           })
-  //       } else {
-  //         duplicateId = _this.goInStateId
-  //         sysOrganChilds({
-  //           parentId: duplicateId
-  //         })
-  //           .then(res => {
-  //             _this.parentId = duplicateId
-  //             _this.groupList = res.data.listSysOrgan
-  //             _this.organUsersList = res.data.organUsers
-  //             _this.userList3 = res.data.organUsers.filter(subitem => subitem.isMemeber).map(item => item.accountId)
-  //             _this.loading = false
-  //           })
-  //           .catch(() => {
-  //             _this.loading = false
-  //           })
-  //       }
-  //     }
-  //   },
-  //   //面包屑去重
-  //   breadcrumbListUniq() {
-  //     var _this = this
-  //     var uniques = []
-  //     var stringify = {}
-  //     for (var i = 0; i < _this.breadcrumbList.length; i++) {
-  //       var keys = Object.keys(_this.breadcrumbList[i])
-  //       keys.sort(function (a, b) {
-  //         return Number(a) - Number(b)
-  //       })
-  //       var str = ''
-  //       for (var j = 0; j < keys.length; j++) {
-  //         str += JSON.stringify(keys[j])
-  //         str += JSON.stringify(_this.breadcrumbList[i][keys[j]])
-  //       }
-  //       if (!stringify.hasOwnProperty(str)) {
-  //         uniques.push(_this.breadcrumbList[i])
-  //         stringify[str] = true
-  //       }
-  //     }
-  //     uniques = uniques
-  //     return uniques
-  //   },
+    async getSysOrganChilds() {
+      this.loading = true;
+      if (!this.parentId) {
+        //没有parentId证明是从根点来的
+        this.parentId = "0";
+        this.getSysOrganChilds2();
+      } else {
+        this.getSysOrganChilds2();
+      }
+    },
+    async getSysOrganChilds2() {
+      this.groupList = [
+        {
+          organId: this.parentId + "-1",
+          parentId: this.parentId,
+          organName: `部门${this.parentId + "-1"}`
+        },
+        {
+          organId: this.parentId + "-2",
+          parentId: this.parentId,
+          organName: `部门${this.parentId + "-2"}`
+        }
+      ];
+      this.organUsersList = [
+        {
+          userName: `部门${this.parentId}的成员`
+        }
+      ];
+      if (
+        this.goInStateId &&
+        this.goInStateId != "undefined" &&
+        this.goInStateId != ""
+      ) {
+        this.getOrgin();
+      } else {
+        this.loading = false;
+      }
+    },
 
-  //   async onExit() {
-  //     await logOffUser({
-  //       userAccountId: this.userInfo.userAccountId,
-  //       otherCompanyId: uni.getStorageSync('currentCompany')
-  //     })
-  //     await this.getCompanyList()
-  //     this.$refs.uToast.show({
-  //       title: '退出成功',
-  //       type: 'success',
-  //       callback: () => {
-  //         uni.reLaunch({ url: '/pages/home/index?current=3' })
-  //       }
-  //     })
-  //   },
-  //   async toSubPage(value) {
-  //     let datas
-  //     let { data } = await sysOrganDetail({
-  //       organId: this.parentId
-  //     })
-  //     datas = data
-  //     uni.navigateTo({
-  //       url:
-  //         './setting-department?state=' +
-  //         value +
-  //         '&parenttype=' +
-  //         encodeURIComponent(JSON.stringify(datas)) +
-  //         '&banzu=' +
-  //         this.organType
-  //     })
-  //   },
-  //   onSelectBreadcrumb(index) {
-  //     if (!index) {
-  //       uni.reLaunch({ url: '/pages/home/index?current=3' })
-  //       return
-  //     }
-  //     console.log('his.breadcrumbList', this.breadcrumbList)
-  //     let breadcrumb = this.breadcrumbList.slice(0, index + 1)
-  //     console.log('breadcrumb', breadcrumb)
-  //     let { organId } = this.breadcrumbList[index]
-  //     uni.navigateTo({
-  //       url: `./index?organId=${organId}&setting=${this.setting}&breadcrumb=${encodeURIComponent(
-  //         JSON.stringify(breadcrumb)
-  //       )}`
-  //     })
-  //   },
-  //   openGroup(data) {
-  //     let breadcrumb = this.breadcrumbList.concat(data)
-  //     uni.navigateTo({
-  //       url: `./index?organId=${data.organId}&setting=${this.setting}&breadcrumb=${encodeURIComponent(
-  //         JSON.stringify(breadcrumb)
-  //       )}&banzu=${data.organType}`
-  //     })
-  //   },
-  //   toInviteMemberPage() {},
-  //   toSettingPage() {
-  //     uni.navigateTo({
-  //       url: `./index?organId=${this.parentId}&setting=true&breadcrumb=${encodeURIComponent(
-  //         JSON.stringify(this.breadcrumbList)
-  //       )}&banzu=${this.organType}`
-  //     })
-  //   },
-  //   finde() {
-  //     uni.reLaunch({ url: '/pages/home/index?current=3' })
-  //     return
-  //     let pages = getCurrentPages() // 当前页面
-  //     let beforePage = pages[pages.length - 2] // 上一页
-  //     uni.navigateBack({
-  //       delta: 1,
-  //       success: () => {
-  //         beforePage._vnode.componentOptions.children[0].componentOptions.children[0].componentInstance.getqueryOrganByCurrentUser()
-  //         beforePage._vnode.componentOptions.children[0].componentOptions.children[0].componentInstance.getCompanyInfo()
-  //       }
-  //     })
-  //   },
+    //外部点击部门进入组织架构
+    async getOrgin() {
+      var _this = this;
+      setData();
+      function setData() {
+        console.log("goInStateId", _this.goInStateId);
+        console.log("goInPrStateId", _this.goInPrStateId);
+        console.log("parentId", _this.parentId);
+        var duplicateId = "";
+        _this.groupList.forEach((item) => {
+          if (_this.goInPrStateId.indexOf(item.organId) != -1) {
+            duplicateId = item.organId;
+            _this.breadcrumbList = _this.breadcrumbList.concat(item);
+            _this.breadcrumbList = _this.breadcrumbListUniq();
+            return;
+          } else if (item.organId == _this.goInStateId) {
+            _this.breadcrumbList = _this.breadcrumbList.concat(item);
+            _this.breadcrumbList = _this.breadcrumbListUniq();
+            return;
+          }
+        });
+        if (duplicateId != "") {
+          _this.groupList = [
+            {
+              organId: duplicateId + "-1",
+              parentId: duplicateId,
+              organName: `部门${duplicateId + "-1"}`
+            },
+            {
+              organId: duplicateId + "-2",
+              parentId: duplicateId,
+              organName: `部门${duplicateId + "-2"}`
+            }
+          ];
+          setData();
+        } else {
+          duplicateId = _this.goInStateId;
+          _this.parentId = duplicateId;
+          _this.groupList = [
+            {
+              organId: duplicateId + "-1",
+              parentId: duplicateId,
+              organName: `部门${duplicateId + "-1"}`
+            },
+            {
+              organId: duplicateId + "-2",
+              parentId: duplicateId,
+              organName: `部门${duplicateId + "-2"}`
+            }
+          ];
+          _this.organUsersList = [
+            {
+              userName: `部门${duplicateId}的成员`
+            }
+          ];
+          _this.loading = false;
+        }
+      }
+    },
+    //面包屑去重
+    breadcrumbListUniq() {
+      var _this = this;
+      var uniques = [];
+      var stringify = {};
+      for (var i = 0; i < _this.breadcrumbList.length; i++) {
+        var keys = Object.keys(_this.breadcrumbList[i]);
+        keys.sort(function (a, b) {
+          return Number(a) - Number(b);
+        });
+        var str = "";
+        for (var j = 0; j < keys.length; j++) {
+          str += JSON.stringify(keys[j]);
+          str += JSON.stringify(_this.breadcrumbList[i][keys[j]]);
+        }
+        if (!stringify.hasOwnProperty(str)) {
+          uniques.push(_this.breadcrumbList[i]);
+          stringify[str] = true;
+        }
+      }
+      uniques = uniques;
+      return uniques;
+    },
 
-  //   onPreviewMember(id) {
-  //     uni.navigateTo({
-  //       url: `/pages/common/preview/member-preview?accountId=${id}&organId=${this.parentId}`
-  //     })
-  //   }
-  // }
-}
+    onSelectBreadcrumb(index) {
+      if (!index) {
+        uni.reLaunch({ url: "/pages/20220814_organization/index" });
+        return;
+      }
+      console.log("his.breadcrumbList", this.breadcrumbList);
+      let breadcrumb = this.breadcrumbList.slice(0, index + 1);
+      console.log("breadcrumb", breadcrumb);
+      let { organId } = this.breadcrumbList[index];
+      uni.navigateTo({
+        url: `./index?organId=${organId}&breadcrumb=${encodeURIComponent(
+          JSON.stringify(breadcrumb)
+        )}`
+      });
+    },
+    openGroup(data) {
+      let breadcrumb = this.breadcrumbList.concat(data);
+      uni.navigateTo({
+        url: `./index?organId=${data.organId}&breadcrumb=${encodeURIComponent(
+          JSON.stringify(breadcrumb)
+        )}`
+      });
+    },
+
+    finde() {
+      if (this.backcontrol) {
+        uni.reLaunch({ url: "/pages/20220814_organization/index" });
+      } else {
+        let pages = getCurrentPages(); // 当前页面
+        let beforePage = pages[pages.length - 2]; // 上一页
+        uni.navigateBack({
+          delta: 1,
+          success: () => {
+            beforePage._vnode.componentOptions.children[0].componentOptions.children[0].componentInstance.getqueryOrganByCurrentUser();
+            beforePage._vnode.componentOptions.children[0].componentOptions.children[0].componentInstance.getCompanyInfo();
+          }
+        });
+      }
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -529,21 +369,7 @@ export default {
     height: 80vh;
     line-height: 80vh;
   }
-  &.safe-area {
-    padding-bottom: constant(safe-area-inset-bottom);
-    padding-bottom: env(safe-area-inset-bottom);
-  }
-  .navbar-right-box {
-    padding-right: 20rpx;
-    display: flex;
-    align-items: center;
-    text {
-      margin-right: 20rpx;
-    }
-    .u-icon {
-      margin-left: 20rpx;
-    }
-  }
+
   .search-bar {
     padding: 30rpx 20rpx 0;
     .search {
@@ -586,10 +412,6 @@ export default {
     .title {
       display: flex;
       align-items: center;
-      .u-tag {
-        margin-right: 20rpx;
-        flex-shrink: 0;
-      }
     }
   }
   &__member {
@@ -618,21 +440,6 @@ export default {
           word-wrap: break-word;
           word-break: break-all;
           text-overflow: ellipsis;
-        }
-        .userPhone {
-          color: #4986fb;
-        }
-      }
-      &_tag {
-        display: flex;
-        flex-wrap: wrap;
-        max-height: 40rpx !important;
-        overflow: hidden;
-        .u-tag {
-          margin-bottom: 10rpx;
-          margin-right: 18rpx;
-          flex-shrink: 0;
-          border-radius: 20rpx;
         }
       }
     }
