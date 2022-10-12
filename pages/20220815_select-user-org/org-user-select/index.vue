@@ -158,7 +158,7 @@ export default {
       type: Array
     },
     inputOpen: {
-      //是否开启编辑
+      //是否开启输入框
       type: Boolean,
       default: true
     },
