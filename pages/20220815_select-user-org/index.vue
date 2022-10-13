@@ -17,6 +17,7 @@
       </p>
       <p>是否显示已选择的人数<u-switch v-model="showLimit"></u-switch></p>
       <p>返回数据为对象<u-switch v-model="returnData"></u-switch></p>
+      <p>根节点人员是否可选<u-switch v-model="rootNodeOpen"></u-switch></p>
     </view>
     <view class="pageData">
       <u-form :model="DataForm" ref="uForm" class="container__item">
@@ -30,6 +31,7 @@
             :chooseSubOpen="chooseSub"
             :showLimit="showLimit"
             :returnData="returnData"
+            :rootNodeOpen="rootNodeOpen"
             :checked="DataForm.userCheckedList"
             @confirm="confirms"
           />
@@ -65,11 +67,12 @@ export default {
         userId: "accountId" //人员唯一标识的字段名称
       },
       max: 99,
-      chooseAdmin: false, //主管理员是否可选
+      chooseAdmin: true, //主管理员是否可选
       chooseSub: false, //子管理员是否可选
       inputOpen: true, //是否开启编辑
       showLimit: true, //是否开启编辑
-      returnData: false //返回数据为对象
+      returnData: false, //返回数据为对象
+      rootNodeOpen: true //根节点人员是否可选
     };
   },
   methods: {

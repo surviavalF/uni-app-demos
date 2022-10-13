@@ -86,7 +86,8 @@
                   <view
                     v-if="
                       (!chooseAdminOpen && userItem.isMain) ||
-                      (!chooseSubOpen && userItem.isSub)
+                      (!chooseSubOpen && userItem.isSub) ||
+                      (!rootNodeOpen && tree_stack.length == 2)
                     "
                     class="checkbox"
                   >
@@ -186,6 +187,11 @@ export default {
       //返回数据为对象
       type: Boolean,
       default: false
+    },
+    rootNodeOpen: {
+      //根节点人员是否可选
+      type: Boolean,
+      default: true
     },
     props: {
       type: Object,
@@ -353,8 +359,8 @@ export default {
 
       this.checked.forEach((eItem) => {
         this.allUserList.forEach((uItem) => {
-          console.log("eItem",eItem);
-          console.log("uItem",uItem);
+          console.log("eItem", eItem);
+          console.log("uItem", uItem);
           if (uItem.accountId == eItem) {
             if (this.userNameList == "") {
               this.userNameList = uItem.userName;
