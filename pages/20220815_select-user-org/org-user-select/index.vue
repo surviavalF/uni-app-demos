@@ -127,7 +127,7 @@
 
           <view v-else class="empty"> 当前层级下没有成员 </view>
         </scroll-view>
-        <view class="btn box_sizing">
+        <view class="box_sizing">
           <u-button type="primary" @click="backConfirm">
             <text v-if="showLimit">
               ({{
@@ -379,130 +379,158 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import url("./css/icon.css");
+.org-user-select {
+  flex: 1;
+  .btnCheck {
+    display: none;
+  }
+  /deep/ .u-input__textarea {
+    min-height: auto !important;
+  }
+  margin-right: 30rpx;
+
+  .poupIn {
+    position: relative;
+    height: 100%;
+
+    .header {
+      width: 100%;
+      top: 0;
+      left: 0;
+      position: absolute;
+      background-color: #fff;
+      z-index: 3;
+
+      .titleText {
+        text-align: left;
+        padding: 20rpx 20rpx;
+        font-size: $uni-font-size-base;
+        color: $uni-text-color;
+        font-weight: bold;
+        z-index: 20;
+      }
+
+      .title {
+        height: 90rpx;
+        padding: 0 32rpx;
+        line-height: 90rpx;
+        font-size: 30rpx;
+        background-color: #f7f7f7;
+        color: #606064;
+
+        .iconclass {
+          display: inline-block;
+          margin: 0 12rpx;
+          color: #d0d4db;
+          font-size: 28rpx;
+        }
+      }
+    }
+    .container-list {
+      position: absolute;
+      top: 180rpx;
+      left: 0;
+      width: 100%;
+      height: 440px;
+
+      .common {
+        background-color: #fff;
+        border-bottom: 1px solid $uni-bg-color-grey;
+        padding: 20rpx 30rpx;
+
+        .content {
+          display: flex;
+          align-items: center;
+          min-height: 60rpx;
+          width: 100%;
+
+          position: relative;
+          font-size: 32rpx;
+
+          .content-item {
+            display: flex;
+            position: relative;
+            align-items: center;
+            overflow: hidden;
+            white-space: normal;
+            word-wrap: break-word;
+            word-break: break-all;
+            text-overflow: ellipsis;
+          }
+
+          .right {
+            color: #babdc3;
+            font-size: 32rpx;
+          }
+        }
+
+        .branch {
+          display: flex;
+          justify-content: space-between;
+        }
+
+        .checkbox {
+          position: relative;
+          height: 36rpx;
+          margin-left: 10rpx;
+          margin-right: 0px;
+          width: 36rpx;
+
+          .color {
+            color: $uni-color-primary;
+            background-color: $uni-color-primary;
+          }
+
+          .txt {
+            font-size: 34rpx;
+            line-height: 44rpx;
+            width: 100%;
+            height: 100%;
+            display: flex;
+          }
+        }
+      }
+
+      .userGroup {
+        padding: 10rpx;
+        background: #f7f7f7;
+      }
+
+      .empty {
+        color: #999999;
+        text-align: center;
+        padding: 20rpx 0;
+      }
+    }
+    .box_sizing {
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      padding-top: 20rpx;
+      padding-left: 20rpx;
+      padding-right: 20rpx;
+      padding-bottom: 20rpx;
+      background-color: #fff;
+      width: 100%;
+
+      z-index: 4;
+      .sureBtn {
+        color: #fff;
+      }
+    }
+  }
+}
 .flex_between_center {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.checkbox {
-  position: relative;
-  height: 36rpx;
-  margin-left: 10rpx;
-  margin-right: 0px;
-  width: 36rpx;
-
-  .color {
-    color: $uni-color-primary;
-    background-color: $uni-color-primary;
-  }
-
-  .txt {
-    font-size: 34rpx;
-    line-height: 44rpx;
-    width: 100%;
-    height: 100%;
-    display: flex;
-  }
-}
-
 .checkBorder {
   border: 1px solid #ecdee4;
-}
-
-.poupIn {
-  position: relative;
-  height: 100%;
-}
-
-.header {
-  width: 100%;
-  top: 0;
-  left: 0;
-  position: absolute;
-  background-color: #fff;
-  z-index: 3;
-
-  .titleText {
-    text-align: left;
-    padding: 20rpx 20rpx;
-    font-size: $uni-font-size-base;
-    color: $uni-text-color;
-    font-weight: bold;
-    z-index: 20;
-  }
-
-  .title {
-    height: 90rpx;
-    padding: 0 32rpx;
-    line-height: 90rpx;
-    font-size: 30rpx;
-    background-color: #f7f7f7;
-    color: #606064;
-
-    .iconclass {
-      display: inline-block;
-      margin: 0 12rpx;
-      color: #d0d4db;
-      font-size: 28rpx;
-    }
-  }
-}
-
-.container-list {
-  position: absolute;
-  top: 180rpx;
-  left: 0;
-  width: 100%;
-  height: 440px;
-
-  .common {
-    background-color: #fff;
-    border-bottom: 1px solid $uni-bg-color-grey;
-    padding: 20rpx 30rpx;
-
-    .content {
-      display: flex;
-      align-items: center;
-      min-height: 60rpx;
-      width: 100%;
-
-      position: relative;
-      font-size: 32rpx;
-
-      .content-item {
-        display: flex;
-        position: relative;
-        align-items: center;
-        overflow: hidden;
-        white-space: normal;
-        word-wrap: break-word;
-        word-break: break-all;
-        text-overflow: ellipsis;
-      }
-
-      .right {
-        color: #babdc3;
-        font-size: 32rpx;
-      }
-    }
-
-    .branch {
-      display: flex;
-      justify-content: space-between;
-    }
-  }
-
-  .userGroup {
-    padding: 10rpx;
-    background: #f7f7f7;
-  }
-
-  .empty {
-    color: #999999;
-    text-align: center;
-    padding: 20rpx 0;
-  }
 }
 
 .active {
@@ -533,44 +561,11 @@ export default {
   align-items: center;
 }
 
-.box_sizing {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-.btn {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  padding-top: 20rpx;
-  padding-left: 20rpx;
-  padding-right: 20rpx;
-  padding-bottom: 20rpx;
-  background-color: #fff;
-  width: 100%;
-
-  z-index: 4;
-  .sureBtn {
-    color: #fff;
-  }
-}
-
 .borderAdd {
   border: 2rpx solid #eaeaea;
   border-radius: 25rpx;
   width: 36rpx;
   height: 36rpx;
   background-color: #eaeaea;
-}
-.org-user-select {
-  flex: 1;
-  .btnCheck {
-    display: none;
-  }
-  /deep/ .u-input__textarea {
-    min-height: auto !important;
-  }
-  margin-right: 30rpx;
 }
 </style>
