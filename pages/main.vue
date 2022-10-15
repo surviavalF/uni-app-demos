@@ -28,6 +28,10 @@ export default {
     return {
       demosList: [
         {
+          name: "树结构选择器(新)",
+          url: "/pages/20221013_select-org/index"
+        },
+        {
           name: "生成uuid",
           url: "/pages/20220922_create-uuid/index"
         },
@@ -44,7 +48,7 @@ export default {
           url: "/pages/20220814_pdf-preview/index"
         },
         {
-          name: "树结构选择器",
+          name: "树结构选择器(旧)",
           url: "/pages/20220812_tree/index"
         },
         {

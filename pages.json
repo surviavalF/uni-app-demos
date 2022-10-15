@@ -7,6 +7,9 @@
       "path": "pages/main"
     },
     {
+      "path": "pages/20221013_select-org/index"
+    },
+    {
       "path": "pages/20220922_create-uuid/index"
     },
     {

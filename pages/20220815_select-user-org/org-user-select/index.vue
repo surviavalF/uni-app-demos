@@ -428,7 +428,7 @@ export default {
     }
     .container-list {
       position: absolute;
-      top: 180rpx;
+      top: 200rpx;
       left: 0;
       width: 100%;
       height: 440px;
