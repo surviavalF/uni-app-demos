@@ -12,7 +12,7 @@
       <view class="poupIn">
         <view class="header">
           <view class="titleText">
-            <text> 人员选择 </text>
+            <text> 树结构选择器 </text>
           </view>
           <view class="title">
             <!-- 顶部面包屑 -->
@@ -67,7 +67,101 @@
             <label class="content">
               <view class="left">
                 <template>
-                  <view class="checkbox"> </view>
+                  <!-- 单选框 -->
+                  <view
+                    v-if="!multiple"
+                    @click.stop="checkbox(item, index)"
+                    class="checkbox"
+                  >
+                    <template
+                      v-if="
+                        !(!itSelfCheckOpen && item[props.dataId] == itselfID) &&
+                        openCheck
+                      "
+                    >
+                      <i
+                        v-if="
+                          newCheckList.length > 0 &&
+                          newCheckList.findIndex((e) => {
+                            return item[props.dataId] == e[props.dataId];
+                          }) > -1
+                        "
+                        class="txt iconfont icon-selected"
+                      />
+                      <i
+                        style="color: #b8b8b8"
+                        v-else
+                        class="txt iconfont icon-weixuanzhong1"
+                      />
+                    </template>
+                    <template v-else>
+                      <i
+                        v-if="
+                          newCheckList.length > 0 &&
+                          newCheckList.findIndex((e) => {
+                            return item[props.dataId] == e[props.dataId];
+                          }) > -1
+                        "
+                        style="color: #b8b8b8"
+                        class="txt iconfont icon-xuanzhong4"
+                      />
+                      <i
+                        v-else
+                        style="color: #b8b8b8"
+                        class="txt iconfont icon-xingzhuang6kaobei3-copy-copy"
+                      />
+                    </template>
+                  </view>
+                  <!-- 多选框 -->
+                  <view
+                    v-if="multiple"
+                    @click.stop="checkMultipleBox(item, index)"
+                    class="checkbox"
+                  >
+                    <template
+                      v-if="
+                        !(!itSelfCheckOpen && item[props.dataId] == itselfID) &&
+                        openCheck
+                      "
+                    >
+                      <i
+                        v-if="judgeChildren(item) == 'notAll'"
+                        class="iconfont icon-banxuanzhongshousuo1-shi txt icons"
+                      />
+                      <i
+                        v-else-if="
+                          newCheckList.length > 0 &&
+                          newCheckList.findIndex((e) => {
+                            return item[props.dataId] == e[props.dataId];
+                          }) > -1
+                        "
+                        class="iconfont icon-xuanzhong txt icon-selected"
+                      />
+                      <i
+                        style="color: #b8b8b8"
+                        v-else
+                        class="txt iconfont icon-weixuanzhong"
+                      />
+                    </template>
+                    <template v-else>
+                      <i
+                        v-if="judgeChildren(item) == 'notAll'"
+                        style="color: #b8b8b8"
+                        class="txt iconfont icon-banxuanzhongshousuo1-shi"
+                      />
+                      <i
+                        v-else-if="
+                          newCheckList.length > 0 &&
+                          newCheckList.findIndex((e) => {
+                            return item[props.dataId] == e[props.dataId];
+                          }) > -1
+                        "
+                        style="color: #b8b8b8"
+                        class="txt iconfont icon-xuanzhong"
+                      />
+                      <view v-else class="squareIcon" />
+                    </template>
+                  </view>
                 </template>
                 <view class="content-item">
                   {{ item[props.dataName] }}
@@ -76,9 +170,8 @@
               <view class="right"
                 ><i
                   v-if="
-                    !item.user &&
                     !isEmpty(item.children) &&
-                    !(!itSelfCheckOpen && item[checkDataId] == itselfID)
+                    !(!itSelfCheckOpen && item[props.dataId] == itselfID)
                   "
                   class="iconfont icon-z043"
                 ></i
@@ -104,19 +197,49 @@ export default {
     value: {
       //控制人员选择popup显隐
       type: Boolean,
-      default: false
+      default: () => false
+    },
+    multiple: {
+      //是否是多选
+      type: Boolean,
+      default: () => {
+        return false;
+      }
+    },
+    checkStrictly: {
+      //多选情况下是否关联（父子关联关系）
+      type: Boolean,
+      default: () => {
+        return false;
+      }
     },
     checked: {
       //是已经选择的部门
-      type: Array
+      type: Array,
+      default: () => []
     },
     inputOpen: {
       //是否开启输入框
       type: Boolean,
-      default: true
+      default: () => true
     },
     itSelfCheckOpen: {
       //自己是否可选
+      type: Boolean,
+      default: () => true
+    },
+    itselfID: {
+      //不可选节点的id
+      type: String,
+      default: () => ""
+    },
+    uncheckThe: {
+      //单选情况下是否可以取消勾选
+      type: Boolean,
+      default: () => false
+    },
+    openCheck: {
+      //开启选择
       type: Boolean,
       default: () => true
     },
@@ -126,7 +249,9 @@ export default {
         return {
           dataName: "organName", //当前部门名字字段
           children: "children", //当前部门的子部门的数组字段名称
-          dataId: "organId"
+          dataId: "organId",
+          parentId: "parentId", //父级节点id
+          parentIds: "parentIds" //全部父级节点id Array
         };
       }
     }
@@ -145,7 +270,7 @@ export default {
       handler(val) {
         const self = this;
         if (!_.isEmpty(self.checked)) {
-          self.setUserNameList();
+          self.setOrgNameList();
         } else {
           self.tips = "未选择";
         }
@@ -173,64 +298,262 @@ export default {
   methods: {
     //打开组件时数据处理
     async computedData() {
+      if (!this.multiple) {
+        this.checkStrictly = false;
+      }
+
       this.tree = treeDataList;
       this.allData = treeDataList;
       this.newCheckList = _.cloneDeep(this.checked);
     },
+    //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓单选操作↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓//
+    checkbox(item, index) {
+      let self = this;
+      if (!self.uncheckThe) {
+        self.newCheckList = [];
+        self.newCheckList.push(self.tree[index]);
+      } else {
+        if (
+          self.newCheckList.length > 0 &&
+          self.newCheckList[0].organId == self.tree[index].organId
+        ) {
+          self.newCheckList = [];
+        } else {
+          self.newCheckList = [];
+          self.newCheckList.push(self.tree[index]);
+        }
+      }
+      self.$emit("confirm", self.newCheckList, "change");
+    },
+    //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑单选操作↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑//
+    //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓多选操作↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓//
+    async checkMultipleBox(item, index) {
+      let self = this;
+      //查看当前点击的节点是否被选中过
+      let findIdex = self.newCheckList.findIndex((e) => {
+        return item[self.props.dataId] == e[self.props.dataId];
+      });
+      if (findIdex > -1) {
+        //取消选中 当前点击的节点
+        self.newCheckList.splice(findIdex, 1);
+        //判断是否有父子关联关系
+        if (self.checkStrictly) {
+          await self.deleteChild(item[self.props.children]);
+          if (item[self.props.parentId] != -1) {
+            self.deleteParent(item);
+          }
+          self.$emit("confirm", self.newCheckList, "change");
+          self.$forceUpdate();
+          return;
+        }
+      } else {
+        //选中 当前点击的节点
+        self.newCheckList.push({ ...item });
+        //判断是否有父子关联关系
+        if (self.checkStrictly) {
+          await self.chooseChild(item[self.props.children]);
+          if (item[self.props.parentId] != -1) {
+            self.chooseParent(item);
+          }
+          self.$emit("confirm", self.newCheckList, "change");
+          self.$forceUpdate();
+          return;
+        }
+      }
+      self.$emit("confirm", self.newCheckList, "change");
+    },
+    // 选中下一级
+    chooseChild(arr) {
+      let self = this;
+      if (arr && arr.length > 0) {
+        arr.forEach((item) => {
+          let findIdex = self.newCheckList.findIndex((e) => {
+            return item[self.props.dataId] == e[self.props.dataId];
+          });
+          if (findIdex == -1) {
+            self.newCheckList.push({ ...item });
+          }
+          if (
+            item[self.props.children] &&
+            item[self.props.children].length > 0
+          ) {
+            self.chooseChild(item[self.props.children]);
+          }
+        });
+      }
+    },
+    // 取消选中的下一级
+    deleteChild(arr) {
+      let self = this;
+      if (arr && arr.length > 0) {
+        arr.forEach((e) => {
+          for (var i = 0; i < self.newCheckList.length; i++) {
+            if (
+              e[self.props.dataId] == self.newCheckList[i][self.props.dataId]
+            ) {
+              self.newCheckList.splice(i, 1);
+              break;
+            }
+          }
+          self.deleteChild(e[self.props.children]);
+        });
+      }
+    },
+    //选中父级
+    chooseParent(item) {
+      var self = this;
+      setData(this.allData);
+      function setData(oItem) {
+        //如果节点的parentId是-1证明的顶级节点，直接进下一次递归
+        if (oItem[self.props.parentId] == -1) {
+          setData(oItem[self.props.children]);
+        } else {
+          oItem.forEach((tItem) => {
+            //检查当前节点（tItem）的id是否在点击节点（item）的parentIds数组里
+            let duplicateIndex = item[self.props.parentIds].indexOf(
+              tItem[self.props.dataId]
+            );
+            if (duplicateIndex != -1) {
+              //检查当前节点（tItem）是否被选中过
+              let findIdex = self.newCheckList.findIndex((e) => {
+                return tItem[self.props.dataId] == e[self.props.dataId];
+              });
+              //如果当前节点（tItem）没被选中过，并且他的只有一个子节点，或者当前节点（tItem）的子节点已经全被勾选，就选中该节点
+              if (
+                (findIdex == -1 &&
+                  tItem[self.props.children] &&
+                  tItem[self.props.children].length == 1) ||
+                self.judgeChildren(tItem) == "all"
+              ) {
+                self.newCheckList.push({ ...tItem });
+              }
+              setData(tItem[self.props.children]);
+            } else {
+              self.$forceUpdate();
+            }
+          });
+        }
+      }
+    },
+    //取消选中的父级
+    deleteParent(item) {
+      let self = this;
+      item[self.props.parentIds].forEach((oItem) => {
+        let findIdex = self.newCheckList.findIndex((e) => {
+          return oItem == e[self.props.dataId];
+        });
+        //如果已选中的列表中有当前节点的父级就删除这个父级节点
+        if (findIdex > -1) {
+          self.newCheckList.splice(findIdex, 1);
+        }
+      });
+    },
+    //判断当前节点的子集是否全选
+    judgeChildren(item) {
+      if (!this.checkStrictly) {
+        return "none";
+      }
+      let self = this;
+      let stack = [];
+      let arr = [];
+      stack = _.cloneDeep(item.children);
+      if (!stack) {
+        return "all";
+      }
+      //广度遍历
+      while (stack.length) {
+        let oItem = stack.shift();
+        let children = oItem.children;
+        arr.push(oItem);
+        if (children) {
+          for (let i = 0; i < children.length; i++) {
+            stack.push(children[i]);
+          }
+        }
+      }
+      let childrenLength = arr.length;
+      let index = 0;
+      arr.forEach((oItem) => {
+        let findIdex = self.newCheckList.findIndex((e) => {
+          return oItem[self.props.dataId] == e[self.props.dataId];
+        });
+        if (findIdex != -1) {
+          index++;
+        }
+      });
+      if (childrenLength == index) {
+        //当前节点的子集是全被选中的
+        console.log("all");
+        return "all";
+      } else if (childrenLength > index && index != 0) {
+        //当前节点的子集是部分被选中
+        console.log("notAll");
+        return "notAll";
+      } else {
+        //当前节点的子集全没有被选中
+        console.log("none");
+        return "none";
+      }
+    },
+    //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑多选操作↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑//
+    //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓顶部面包屑操作↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓//
     //到下一级
     toChildren(item) {
-      var that = this;
-      let children = that.props.children;
-      that.tree = item[children];
-      if (that.tree_stack[0][this.props.dataId] == item[this.props.dataId]) {
+      let self = this;
+      let children = self.props.children;
+      self.tree = item[children];
+      if (self.tree_stack[0][self.props.dataId] == item[self.props.dataId]) {
         console.log("？");
       } else {
-        that.tree_stack.push(item);
+        self.tree_stack.push(item);
       }
-      this.$nextTick(() => {
-        this.scrollLeft += 200;
+      self.$nextTick(() => {
+        self.scrollLeft += 200;
       });
-      this.$forceUpdate();
+      self.$forceUpdate();
     },
     //返回其它层级
     backTree(item, index) {
-      let that = this,
+      let self = this,
         max = 66666;
       if (index == -1) {
-        that.tree = that.allData;
-        that.tree_stack.splice(1, max);
+        self.tree = self.allData;
+        self.tree_stack.splice(1, max);
       } else {
-        if (that.tree_stack.length - index > 2) {
-          that.tree_stack.forEach((item, i) => {
+        if (self.tree_stack.length - index > 2) {
+          self.tree_stack.forEach((item, i) => {
             if (i > index) {
-              that.tree_stack.splice(i, max);
+              self.tree_stack.splice(i, max);
             }
           });
-        } else if (index == that.tree_stack.length - 1) {
+        } else if (index == self.tree_stack.length - 1) {
           console.log("点击的是已在层级");
         } else {
-          that.tree_stack.splice(that.tree_stack.length - 1, 1);
+          self.tree_stack.splice(self.tree_stack.length - 1, 1);
         }
-        that.tree = item[that.props.children];
+        self.tree = item[self.props.children];
       }
       this.$forceUpdate();
     },
+    //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑顶部面包屑操作↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑//
     //点击确定
     backConfirm() {
       this.$emit("input", false);
-      // if (this.returnData) {
-      //   let newList = [];
-      //   this.newCheckList.forEach((eItem) => {
-      //     this.allUserList.forEach((uItem) => {
-      //       if (uItem.accountId == eItem) {
-      //         newList.push(uItem);
-      //       }
-      //     });
-      //   });
-      //   this.$emit("confirm", newList);
-      // } else {
-      //   this.$emit("confirm", this.newCheckList);
-      // }
+      this.$emit("confirm", this.newCheckList, "finish");
+    },
+    //输入框内容返显
+    setOrgNameList() {
+      let orgNameList = "";
+      this.checked.forEach((eItem) => {
+        console.log("eItem", eItem);
+        if (orgNameList == "") {
+          orgNameList = eItem[this.props.dataName];
+        } else {
+          orgNameList = orgNameList + "," + eItem[this.props.dataName];
+        }
+      });
+      console.log("orgNameList", orgNameList);
+      this.tips = orgNameList;
     },
     //打开弹窗
     onOpen() {
@@ -332,12 +655,28 @@ export default {
                 background-color: $uni-color-primary;
               }
 
+              .icon-selected {
+                color: $uni-color-primary !important;
+                font-size: 34rpx !important;
+              }
+
+              .icons {
+                color: $uni-color-primary !important;
+                font-size: 34rpx !important;
+              }
+
               .txt {
                 font-size: 34rpx;
                 line-height: 44rpx;
                 width: 100%;
                 height: 100%;
                 display: flex;
+              }
+              .squareIcon {
+                border-radius: 6rpx;
+                width: 34rpx;
+                height: 34rpx;
+                background-color: #b8b8b8;
               }
             }
 
