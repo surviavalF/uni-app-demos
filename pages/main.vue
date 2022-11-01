@@ -28,6 +28,10 @@ export default {
     return {
       demosList: [
         {
+          name: "头像选择器",
+          url: "/pages/20221101_change-header-image/index"
+        },
+        {
           name: "引导遮罩",
           url: "/pages/20221019_guide-step/index"
         },
@@ -115,6 +119,7 @@ export default {
       align-items: center;
       justify-content: center;
       padding: 10rpx;
+      height: 160rpx;
       background: #fff;
       border-radius: 20rpx;
       border: 1rpx solid #999;

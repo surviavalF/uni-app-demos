@@ -7,6 +7,7 @@ const authModule = {
   namespaced: true,
   state: {
     token: uni.getStorageSync('token') || null,
+    userIcon: uni.getStorageSync('userIcon') || null,
   },
   getters: {
     isAuth: state => {
@@ -18,9 +19,15 @@ const authModule = {
       state.token = val
       uni.setStorageSync('token', val)
     },
+    setUserIcon(state, val) {
+      state.userIcon = val
+      uni.setStorageSync('userIcon', val)
+    },
     clear(state) {
       state.token = null
+      state.userIcon = null
       uni.removeStorageSync('token')
+      uni.removeStorageSync('userIcon')
 
     }
   },

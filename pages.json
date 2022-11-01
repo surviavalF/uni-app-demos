@@ -7,6 +7,15 @@
       "path": "pages/main"
     },
     {
+      "path": "pages/20221101_change-header-image/avatar-cropper/index"
+    },
+    {
+      "path": "pages/20221101_change-header-image/avatar-cropper/preview"
+    },
+    {
+      "path": "pages/20221101_change-header-image/index"
+    },
+    {
       "path": "pages/20221019_guide-step/index"
     },
     {
