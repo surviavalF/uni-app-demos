@@ -28,6 +28,10 @@ export default {
     return {
       demosList: [
         {
+          name: "引导遮罩",
+          url: "/pages/20221019_guide-step/index"
+        },
+        {
           name: "树结构选择器(新)",
           url: "/pages/20221013_select-org/index"
         },
